@@ -30,10 +30,12 @@ namespace InterviewExcercise.Reporter
         }
         public void SetStepStatusPass(string stepDescription)
         {
+            Console.WriteLine(stepDescription);
             test.Log(Status.Pass, stepDescription);
         }
         public void SetStepStatusWarning(string stepDescription)
         {
+            Console.WriteLine(stepDescription);
             test.Log(Status.Warning, stepDescription);
         }
         public void SetTestStatusPass()
