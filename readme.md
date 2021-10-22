@@ -20,7 +20,7 @@ Net core project is divided in the followings
 	- InterviewExcercise
 		- ApiClient -> Classes with RestClient with respective endpoints, requests and responses
 		- Tests -> Test classes separated by functionalities and respecting atomicity of tests
-		- Reporter -> Classes
+		- Reporter -> Classes with Reporting and logging mechanisms
 
 ## How to execute it 
 
