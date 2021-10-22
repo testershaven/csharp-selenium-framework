@@ -6,20 +6,26 @@ using System.Linq;
 using System.Net;
 using System.Text.Json;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace InterviewExcercise
 {
-    public class ToDoTests : IClassFixture<RestClientFixture>
+    public class ToDoTests
     {
         private readonly RestClientFixture restClient;
+        private readonly ITestOutputHelper testOutputHelper;
 
         private static UserData toDoUser;
 
-        public ToDoTests(RestClientFixture restClientFixture)
+        public ToDoTests(ITestOutputHelper testOutputHelper)
         {
-            restClient = restClientFixture;
+            if (restClient == null)
+            {
+                restClient = new RestClientFixture(testOutputHelper);
+                this.testOutputHelper = testOutputHelper;
+                getRandomUser();
+            }
 
-            if (toDoUser == null) getRandomUser();
         }
 
         [Fact]
@@ -34,6 +40,9 @@ namespace InterviewExcercise
             };
 
             var postResponse = restClient.ToDoEndpoint.PostToDo(request, toDoUser.id);
+
+            testOutputHelper.WriteLine("Response Code is: " + postResponse.StatusCode);
+            testOutputHelper.WriteLine("Response Content is: " + postResponse.Content);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.Created);
             postResponse.Content.Should().Contain(request.Title);
@@ -55,6 +64,9 @@ namespace InterviewExcercise
 
             var postResponse = restClient.ToDoEndpoint.PostToDo(request, toDoUser.id);
 
+            testOutputHelper.WriteLine("Response Code is: " + postResponse.StatusCode);
+            testOutputHelper.WriteLine("Response Content is: " + postResponse.Content);
+
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"title\",\"message\":\"can't be blank\"}");
         }
@@ -72,6 +84,9 @@ namespace InterviewExcercise
 
             var postResponse = restClient.ToDoEndpoint.PostToDo(request, toDoUser.id);
 
+            testOutputHelper.WriteLine("Response Code is: " + postResponse.StatusCode);
+            testOutputHelper.WriteLine("Response Content is: " + postResponse.Content);
+
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"status\",\"message\":\"can't be blank\"}");
         }
@@ -88,12 +103,17 @@ namespace InterviewExcercise
             };
 
             var postResponse = restClient.ToDoEndpoint.PostToDo(request, -1);
+
+            testOutputHelper.WriteLine("Response Code is: " + postResponse.StatusCode);
+            testOutputHelper.WriteLine("Response Content is: " + postResponse.Content);
+
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"user\",\"message\":\"must exist\"}");
         }
 
         private void getRandomUser()
         {
+            testOutputHelper.WriteLine("Picking a random User");
             var response = restClient.UserEndpoint.GetActiveUsers();
             var users = JsonSerializer.Deserialize<GetUsersResponse>(response.Content);
             toDoUser = users.data.Take(1).First();
