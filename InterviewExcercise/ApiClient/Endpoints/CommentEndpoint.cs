@@ -1,15 +1,15 @@
 ﻿using InterviewExcercise.ApiClient.Requests;
+using InterviewExcercise.Reporter;
 using RestSharp;
-using Xunit.Abstractions;
 
 namespace InterviewExcercise.ApiClient.Endpoints
 {
     public class CommentEndpoint
     {
         private RestClient client;
-        private readonly ITestOutputHelper outputHelper;
+        private readonly ExtentReportsHelper outputHelper;
 
-        public CommentEndpoint(RestClient restClient, ITestOutputHelper outputHelper)
+        public CommentEndpoint(RestClient restClient, ExtentReportsHelper outputHelper)
         {
             client = restClient;
             this.outputHelper = outputHelper;
@@ -17,7 +17,7 @@ namespace InterviewExcercise.ApiClient.Endpoints
 
         public IRestResponse PostComment(PostCommentRequest requestBody, int postId)
         {
-            outputHelper.WriteLine("Posting Comment");
+            outputHelper.SetStepStatusPass("Posting Comment");
             var request = new RestRequest($"/public/v1/posts/{postId}/comments");
             request.JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer();
             request.AddJsonBody(requestBody);

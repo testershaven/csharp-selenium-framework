@@ -2,33 +2,62 @@
 using InterviewExcercise.ApiClient.Endpoints;
 using InterviewExcercise.ApiClient.Requests;
 using InterviewExcercise.ApiClient.Responses;
+using InterviewExcercise.Reporter;
+using NUnit.Framework;
+using NUnit.Framework.Interfaces;
+using System;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace InterviewExcercise
 {
     public class PostTests
     {
-        private readonly RestClientFixture restClient;
-        private readonly ITestOutputHelper testOutputHelper;
+        private RestClientFixture restClient;
 
         private static UserData postUser;
 
-        public PostTests(ITestOutputHelper testOutputHelper)
+        [OneTimeSetUp]
+        public void SetUpReporter()
         {
-            if (restClient == null)
-            {
-                restClient = new RestClientFixture(testOutputHelper);
-                this.testOutputHelper = testOutputHelper;
-                getRandomUser();
-            }
-
+            restClient = new RestClientFixture(ReportFixture.Instance);
+        }
+        [OneTimeTearDown]
+        public void CloseAll()
+        {
+            ReportFixture.Instance.Close();
         }
 
-        [Fact]
+        [TearDown]
+        public void AfterTest()
+        {
+            var status = TestContext.CurrentContext.Result.Outcome.Status;
+            var stacktrace = TestContext.CurrentContext.Result.StackTrace;
+            var errorMessage = "<pre>" + TestContext.CurrentContext.Result.Message + "</pre>";
+            switch (status)
+            {
+                case TestStatus.Failed:
+                    ReportFixture.Instance.SetTestStatusFail($"<br>{errorMessage}<br>Stack Trace: <br>{stacktrace}<br>");
+                    break;
+                case TestStatus.Skipped:
+                    ReportFixture.Instance.SetTestStatusSkipped();
+                    break;
+                default:
+                    ReportFixture.Instance.SetTestStatusPass();
+                    break;
+            }
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name);
+            if (postUser == null) getRandomUser();
+            
+        }
+
+        [Test]
         public void CreatePostOnUser()
         {
             var request = new CreatePostRequest()
@@ -40,8 +69,8 @@ namespace InterviewExcercise
 
             var postResponse = restClient.PostEndpoint.CreatePost(request, postUser.id);
 
-            testOutputHelper.WriteLine("Response Code is: " + postResponse.StatusCode);
-            testOutputHelper.WriteLine("Response Content is: " + postResponse.Content);
+            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
+            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + postResponse.Content);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.Created);
             postResponse.Content.Should().Contain(request.Title);
@@ -49,7 +78,7 @@ namespace InterviewExcercise
             postResponse.Content.Should().Contain(request.Body);
         }
 
-        [Fact]
+        [Test]
         public void CreatePostWithoutTitle()
         {
             var request = new CreatePostRequest()
@@ -61,14 +90,14 @@ namespace InterviewExcercise
 
             var postResponse = restClient.PostEndpoint.CreatePost(request, postUser.id);
 
-            testOutputHelper.WriteLine("Response Code is: " + postResponse.StatusCode);
-            testOutputHelper.WriteLine("Response Content is: " + postResponse.Content);
+            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
+            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + postResponse.Content);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"title\",\"message\":\"can't be blank\"}");
         }
 
-        [Fact]
+        [Test]
         public void CreatePostWithoutBody()
         {
             var request = new CreatePostRequest()
@@ -80,14 +109,14 @@ namespace InterviewExcercise
 
             var postResponse = restClient.PostEndpoint.CreatePost(request, postUser.id);
 
-            testOutputHelper.WriteLine("Response Code is: " + postResponse.StatusCode);
-            testOutputHelper.WriteLine("Response Content is: " + postResponse.Content);
+            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
+            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + postResponse.Content);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"body\",\"message\":\"can't be blank\"}");
         }
 
-        [Fact]
+        [Test]
         public void CreatePostWithoutUserId()
         {
             var request = new CreatePostRequest()
@@ -99,8 +128,8 @@ namespace InterviewExcercise
 
             var postResponse = restClient.PostEndpoint.CreatePost(request, -1);
 
-            testOutputHelper.WriteLine("Response Code is: " + postResponse.StatusCode);
-            testOutputHelper.WriteLine("Response Content is: " + postResponse.Content);
+            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
+            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + postResponse.Content);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"user\",\"message\":\"must exist\"}");
@@ -108,7 +137,7 @@ namespace InterviewExcercise
 
         private void getRandomUser()
         {
-            testOutputHelper.WriteLine("Picking a random user");
+            ReportFixture.Instance.SetStepStatusPass("Picking a random user");
             var response = restClient.UserEndpoint.GetActiveUsers();
             var users = JsonSerializer.Deserialize<GetUsersResponse>(response.Content);
             postUser = users.data.Take(1).First();

@@ -1,16 +1,16 @@
 ﻿using InterviewExcercise.ApiClient.Requests;
+using InterviewExcercise.Reporter;
 using RestSharp;
-using Xunit.Abstractions;
 
 namespace InterviewExcercise.ApiClient.Endpoints
 {
     public class ToDoEndpoint
     {
         private RestClient client;
-        private readonly ITestOutputHelper outputHelper;
+        private readonly ExtentReportsHelper outputHelper;
 
 
-        public ToDoEndpoint(RestClient restClient, ITestOutputHelper outputHelper)
+        public ToDoEndpoint(RestClient restClient, ExtentReportsHelper outputHelper)
         {
             client = restClient;
             this.outputHelper = outputHelper;
@@ -18,7 +18,7 @@ namespace InterviewExcercise.ApiClient.Endpoints
 
         public IRestResponse PostToDo(PostToDoRequest requestBody, int userId)
         {
-            outputHelper.WriteLine("Posting To Do");
+            outputHelper.SetStepStatusPass("Posting To Do");
             var request = new RestRequest($"/public/v1/users/{userId}/todos");
             request.JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer();
             request.AddJsonBody(requestBody);
