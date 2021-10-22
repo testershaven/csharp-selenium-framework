@@ -23,6 +23,13 @@ namespace InterviewExcercise.ApiClient.Endpoints
 
         }
 
+        public IRestResponse GetPosts()
+        {
+            var request = new RestRequest($"/public/v1/posts");
+            request.JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer();
+            return client.Get(request);
+        }
+        
         public CreatePostResponse GeneratePost(int userId)
         {
             var request = new CreatePostRequest()

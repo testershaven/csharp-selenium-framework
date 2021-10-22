@@ -23,10 +23,17 @@ namespace InterviewExcercise.ApiClient.Endpoints
             return client.Post(request);
         }
 
+        //Not Implementing Pagination as out of scope
+        public IRestResponse GetActiveUsers()
+        {
+            var request = new RestRequest("/public/v1/users?status=active");
+            request.JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer();
+            return client.Get(request);
+        }
+
         public PostUserResponse GenerateRandomUser()
         {
             var randomGenerator = new Random();
-            PostUserResponse postUserResponse = null;
 
             var request = new PostUserRequest()
             {

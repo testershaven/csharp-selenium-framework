@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-namespace InterviewExcercise.ApiClient.Responses
+﻿namespace InterviewExcercise.ApiClient.Responses
 {
     public class PostData
     {
         public int id { get; set; }
-        public string name { get; set; }
-        public string email { get; set; }
-        public string gender { get; set; }
-        public string status { get; set; }
+        public int user_id { get; set; }
+        public string title { get; set; }
+        public string body { get; set; }
     }
 }

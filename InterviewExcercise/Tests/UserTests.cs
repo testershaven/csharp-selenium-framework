@@ -7,7 +7,6 @@ using Xunit;
 
 namespace InterviewExcercise
 {
-    [Collection("Api Tests")]
     public class UserTests : IClassFixture<RestClientFixture>
     {
         private readonly RestClientFixture restClient;

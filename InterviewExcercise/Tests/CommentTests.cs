@@ -2,27 +2,26 @@
 using InterviewExcercise.ApiClient.Endpoints;
 using InterviewExcercise.ApiClient.Requests;
 using InterviewExcercise.ApiClient.Responses;
+using System;
+using System.Linq;
 using System.Net;
+using System.Text.Json;
 using Xunit;
 
 namespace InterviewExcercise
 {
-    [Collection("Api Tests")]
     public class CommentTests : IClassFixture<RestClientFixture>
     {
         private readonly RestClientFixture restClient;
-
-        private static PostUserResponse postUser;
-        private static PostUserResponse commentUser;
-        private static CreatePostResponse postInfo;
+        private UserData commentUser;
+        private PostData post;
 
         public CommentTests(RestClientFixture restClientFixture)
         {
             restClient = restClientFixture;
 
-            postUser = postUser == null ? restClient.UserEndpoint.GenerateRandomUser() : postUser;
-            postInfo = postInfo == null ? restClient.PostEndpoint.GeneratePost(postUser.data.id) : postInfo;
-            commentUser = commentUser == null ? restClient.UserEndpoint.GenerateRandomUser() : commentUser;
+            if (post == null) getRandomPost();
+            if (commentUser == null) getRandomUser();
         }
 
         [Fact]
@@ -30,12 +29,12 @@ namespace InterviewExcercise
         {
             var request = new PostCommentRequest()
             {
-                Name = commentUser.data.name,
-                Email = commentUser.data.email,
+                Name = commentUser.name,
+                Email = commentUser.email,
                 Body = "This is a test body"
             };
 
-            var postResponse = restClient.CommentEndpoint.PostComment(request, postInfo.data.id);
+            var postResponse = restClient.CommentEndpoint.PostComment(request, post.id);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.Created);
             postResponse.Content.Should().Contain(request.Name);
@@ -49,11 +48,11 @@ namespace InterviewExcercise
             var request = new PostCommentRequest()
             {
                 Name = null,
-                Email = commentUser.data.email,
+                Email = commentUser.email,
                 Body = "This is a test body"
             };
 
-            var postResponse = restClient.CommentEndpoint.PostComment(request, postInfo.data.id);
+            var postResponse = restClient.CommentEndpoint.PostComment(request, post.id);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"name\",\"message\":\"can't be blank\"}");
@@ -64,12 +63,12 @@ namespace InterviewExcercise
         {
             var request = new PostCommentRequest()
             {
-                Name = commentUser.data.name,
+                Name = commentUser.name,
                 Email = null,
                 Body = "This is a test body"
             };
 
-            var postResponse = restClient.CommentEndpoint.PostComment(request, postInfo.data.id);
+            var postResponse = restClient.CommentEndpoint.PostComment(request, post.id);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"email\",\"message\":\"can't be blank\"}");
@@ -80,12 +79,12 @@ namespace InterviewExcercise
         {
             var request = new PostCommentRequest()
             {
-                Name = commentUser.data.name,
-                Email = commentUser.data.email,
+                Name = commentUser.name,
+                Email = commentUser.email,
                 Body = null
             };
 
-            var postResponse = restClient.CommentEndpoint.PostComment(request, postInfo.data.id);
+            var postResponse = restClient.CommentEndpoint.PostComment(request, post.id);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"body\",\"message\":\"can't be blank\"}");
@@ -96,8 +95,8 @@ namespace InterviewExcercise
         {
             var request = new PostCommentRequest()
             {
-                Name = commentUser.data.name,
-                Email = commentUser.data.email,
+                Name = commentUser.name,
+                Email = commentUser.email,
                 Body = "This is a test body"
             };
 
@@ -105,6 +104,20 @@ namespace InterviewExcercise
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"post\",\"message\":\"must exist\"}");
+        }
+
+        private void getRandomUser()
+        {
+            var response = restClient.UserEndpoint.GetActiveUsers();
+            var users = JsonSerializer.Deserialize<GetUsersResponse>(response.Content);
+            commentUser = users.data.Take(1).First();
+        }
+
+        private void getRandomPost()
+        {
+            var response = restClient.PostEndpoint.GetPosts();
+            var users = JsonSerializer.Deserialize<GetPostsResponse>(response.Content);
+            post = users.data.Take(1).First();
         }
     }
 }
