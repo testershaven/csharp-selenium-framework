@@ -2,20 +2,19 @@
 using AventStack.ExtentReports.Reporter;
 using System;
 using System.IO;
-using System.Reflection;
 
 namespace InterviewExcercise.Reporter
 {
     public class ExtentReportsHelper
     {
         public ExtentReports extent { get; set; }
-        public ExtentHtmlReporter reporter { get; set; }
+        public ExtentV3HtmlReporter reporter { get; set; }
         public ExtentTest test { get; set; }
         public ExtentReportsHelper()
         {
             extent = new ExtentReports();
-            reporter = new ExtentHtmlReporter(Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName, "ExtentReports.html"));
-            
+            reporter = new ExtentV3HtmlReporter(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName, "ExtentReports.html"));
+
             reporter.Config.DocumentTitle = "Automation Testing Report";
             reporter.Config.ReportName = "Regression Testing";
             reporter.Config.Theme = AventStack.ExtentReports.Reporter.Configuration.Theme.Standard;

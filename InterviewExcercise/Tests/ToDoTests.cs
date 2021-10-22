@@ -5,7 +5,6 @@ using InterviewExcercise.ApiClient.Responses;
 using InterviewExcercise.Reporter;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
-using System;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
@@ -22,7 +21,7 @@ namespace InterviewExcercise
         public void SetUpReporter()
         {
             restClient = new RestClientFixture(ReportFixture.Instance);
- 
+
         }
         [OneTimeTearDown]
         public void CloseAll()
@@ -56,7 +55,7 @@ namespace InterviewExcercise
             ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name);
             if (toDoUser == null) getRandomUser();
         }
-    
+
 
         [Test]
         public void CreateToDoOnUser()

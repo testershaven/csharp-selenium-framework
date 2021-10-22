@@ -5,7 +5,6 @@ using InterviewExcercise.ApiClient.Responses;
 using InterviewExcercise.Reporter;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
-using System;
 using System.Linq;
 using System.Net;
 using System.Text.Json;

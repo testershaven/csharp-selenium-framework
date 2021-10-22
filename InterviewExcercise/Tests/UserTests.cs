@@ -9,7 +9,7 @@ using System.Net;
 
 namespace InterviewExcercise
 {
-    public class UserTests 
+    public class UserTests
     {
         private RestClientFixture restClient;
 
@@ -17,7 +17,6 @@ namespace InterviewExcercise
         public void SetUpReporter()
         {
             restClient = new RestClientFixture(ReportFixture.Instance);
-
         }
 
         [OneTimeTearDown]
@@ -31,7 +30,7 @@ namespace InterviewExcercise
         {
             ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name);
         }
-        
+
         [TearDown]
         public void AfterTest()
         {
@@ -51,7 +50,6 @@ namespace InterviewExcercise
                     break;
             }
         }
-
 
         [Test]
         public void CreateUserSuccesfully()

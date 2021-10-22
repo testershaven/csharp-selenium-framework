@@ -5,7 +5,6 @@ using InterviewExcercise.ApiClient.Responses;
 using InterviewExcercise.Reporter;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
-using System;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
@@ -54,7 +53,7 @@ namespace InterviewExcercise
         {
             ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name);
             if (postUser == null) getRandomUser();
-            
+
         }
 
         [Test]
