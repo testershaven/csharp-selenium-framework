@@ -1,6 +1,6 @@
-﻿using System;
-using RestSharp;
+﻿using RestSharp;
 using RestSharp.Serialization.Json;
+using System;
 
 namespace InterviewExcercise.ApiClient.Endpoints
 {

@@ -20,7 +20,7 @@ namespace InterviewExcercise
         public void CreateUserSuccesfully()
         {
             var postUserRequest = GeneratePostUserRequest();
-            
+
             var userCreationResponse = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
@@ -28,7 +28,8 @@ namespace InterviewExcercise
         }
 
         [Fact]
-        public void CreateUserWithExistingEmail() {
+        public void CreateUserWithExistingEmail()
+        {
 
             var firstUser = GeneratePostUserRequest();
 
@@ -47,7 +48,8 @@ namespace InterviewExcercise
         }
 
         [Fact]
-        public void PostUserWithoutName() {
+        public void PostUserWithoutName()
+        {
             var postUserRequest = GeneratePostUserRequest();
             postUserRequest.Name = null;
 
@@ -61,7 +63,8 @@ namespace InterviewExcercise
         }
 
         [Fact]
-        public void PostUserWithoutEmail() {
+        public void PostUserWithoutEmail()
+        {
             var postUserRequest = GeneratePostUserRequest();
             postUserRequest.Email = null;
 
@@ -74,7 +77,8 @@ namespace InterviewExcercise
         }
 
         [Fact]
-        public void PostUserWithoutGender() {
+        public void PostUserWithoutGender()
+        {
             var postUserRequest = GeneratePostUserRequest();
             postUserRequest.Gender = null;
 
@@ -87,7 +91,8 @@ namespace InterviewExcercise
         }
 
         [Fact]
-        public void PostUserWithoutStatus() {
+        public void PostUserWithoutStatus()
+        {
             var postUserRequest = GeneratePostUserRequest();
             postUserRequest.Status = null;
 
@@ -154,4 +159,4 @@ namespace InterviewExcercise
             };
         }
     }
-}   
+}

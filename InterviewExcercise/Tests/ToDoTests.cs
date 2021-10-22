@@ -2,7 +2,6 @@
 using InterviewExcercise.ApiClient.Endpoints;
 using InterviewExcercise.ApiClient.Requests;
 using InterviewExcercise.ApiClient.Responses;
-using System;
 using System.Linq;
 using System.Net;
 using System.Text.Json;

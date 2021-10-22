@@ -29,7 +29,7 @@ namespace InterviewExcercise.ApiClient.Endpoints
             request.JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer();
             return client.Get(request);
         }
-        
+
         public CreatePostResponse GeneratePost(int userId)
         {
             var request = new CreatePostRequest()

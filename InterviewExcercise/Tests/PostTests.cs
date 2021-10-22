@@ -9,7 +9,7 @@ using Xunit;
 
 namespace InterviewExcercise
 {
-    public class PostTests : IClassFixture<RestClientFixture> 
+    public class PostTests : IClassFixture<RestClientFixture>
     {
         private readonly RestClientFixture restClient;
 
@@ -25,7 +25,8 @@ namespace InterviewExcercise
         [Fact]
         public void CreatePostOnUser()
         {
-            var request = new CreatePostRequest() {
+            var request = new CreatePostRequest()
+            {
                 User = postUser.name,
                 Title = "This is the title for a test",
                 Body = "This is a test body"

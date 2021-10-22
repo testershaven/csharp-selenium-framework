@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-namespace InterviewExcercise.ApiClient.Responses
+﻿namespace InterviewExcercise.ApiClient.Responses
 {
     public class UserData
     {
