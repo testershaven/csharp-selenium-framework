@@ -1,28 +1,57 @@
 using FluentAssertions;
 using InterviewExcercise.ApiClient.Endpoints;
 using InterviewExcercise.ApiClient.Requests;
+using InterviewExcercise.Reporter;
+using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 using System;
 using System.Net;
-using Xunit;
-using Xunit.Abstractions;
 
 namespace InterviewExcercise
 {
     public class UserTests
     {
-        private readonly RestClientFixture restClient;
-        private readonly ITestOutputHelper testOutputHelper;
+        private RestClientFixture restClient;
 
-        public UserTests(ITestOutputHelper testOutputHelper)
+        [OneTimeSetUp]
+        public void SetUpReporter()
         {
-            if (restClient == null)
+            restClient = new RestClientFixture(ReportFixture.Instance);
+        }
+
+        [OneTimeTearDown]
+        public void CloseAll()
+        {
+            ReportFixture.Instance.Close();
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name);
+        }
+
+        [TearDown]
+        public void AfterTest()
+        {
+            var status = TestContext.CurrentContext.Result.Outcome.Status;
+            var stacktrace = TestContext.CurrentContext.Result.StackTrace;
+            var errorMessage = "<pre>" + TestContext.CurrentContext.Result.Message + "</pre>";
+            switch (status)
             {
-                restClient = new RestClientFixture(testOutputHelper);
-                this.testOutputHelper = testOutputHelper;
+                case TestStatus.Failed:
+                    ReportFixture.Instance.SetTestStatusFail($"<br>{errorMessage}<br>Stack Trace: <br>{stacktrace}<br>");
+                    break;
+                case TestStatus.Skipped:
+                    ReportFixture.Instance.SetTestStatusSkipped();
+                    break;
+                default:
+                    ReportFixture.Instance.SetTestStatusPass();
+                    break;
             }
         }
 
-        [Fact]
+        [Test]
         public void CreateUserSuccesfully()
         {
             var postUserRequest = GeneratePostUserRequest();
@@ -30,12 +59,12 @@ namespace InterviewExcercise
             var userCreationResponse = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
-            testOutputHelper.WriteLine("Response Code is: " + userCreationResponse.StatusCode);
-            testOutputHelper.WriteLine("Response Content is: " + userCreationResponse.Content);
+            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + userCreationResponse.StatusCode);
+            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + userCreationResponse.Content);
             userCreationResponse.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
-        [Fact]
+        [Test]
         public void CreateUserWithExistingEmail()
         {
             var firstUser = GeneratePostUserRequest();
@@ -48,8 +77,8 @@ namespace InterviewExcercise
             var secondUserResponse = restClient.UserEndpoint
                                         .PostUser(secondUser);
 
-            testOutputHelper.WriteLine("Response Code is: " + secondUserResponse.StatusCode);
-            testOutputHelper.WriteLine("Response Content is: " + secondUserResponse.Content);
+            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + secondUserResponse.StatusCode);
+            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + secondUserResponse.Content);
 
             secondUserResponse.StatusCode
                 .Should().Be(HttpStatusCode.UnprocessableEntity);
@@ -57,7 +86,7 @@ namespace InterviewExcercise
                 .Should().Contain("{\"field\":\"email\",\"message\":\"has already been taken\"}");
         }
 
-        [Fact]
+        [Test]
         public void PostUserWithoutName()
         {
             var postUserRequest = GeneratePostUserRequest();
@@ -66,8 +95,8 @@ namespace InterviewExcercise
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
-            testOutputHelper.WriteLine("Response Code is: " + response.StatusCode);
-            testOutputHelper.WriteLine("Response Content is: " + response.Content);
+            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -75,7 +104,7 @@ namespace InterviewExcercise
 
         }
 
-        [Fact]
+        [Test]
         public void PostUserWithoutEmail()
         {
             var postUserRequest = GeneratePostUserRequest();
@@ -84,15 +113,15 @@ namespace InterviewExcercise
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
-            testOutputHelper.WriteLine("Response Code is: " + response.StatusCode);
-            testOutputHelper.WriteLine("Response Content is: " + response.Content);
+            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
                     .Should().Contain("{\"field\":\"email\",\"message\":\"can't be blank\"}");
         }
 
-        [Fact]
+        [Test]
         public void PostUserWithoutGender()
         {
             var postUserRequest = GeneratePostUserRequest();
@@ -101,15 +130,15 @@ namespace InterviewExcercise
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
-            testOutputHelper.WriteLine("Response Code is: " + response.StatusCode);
-            testOutputHelper.WriteLine("Response Content is: " + response.Content);
+            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
                     .Should().Contain("{\"field\":\"gender\",\"message\":\"can't be blank\"}");
         }
 
-        [Fact]
+        [Test]
         public void PostUserWithoutStatus()
         {
             var postUserRequest = GeneratePostUserRequest();
@@ -118,15 +147,15 @@ namespace InterviewExcercise
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
-            testOutputHelper.WriteLine("Response Code is: " + response.StatusCode);
-            testOutputHelper.WriteLine("Response Content is: " + response.Content);
+            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
                     .Should().Contain("{\"field\":\"status\",\"message\":\"can't be blank\"}");
         }
 
-        [Fact]
+        [Test]
         public void PostUserWithoutUsernameInMail()
         {
             var postUserRequest = GeneratePostUserRequest();
@@ -135,15 +164,15 @@ namespace InterviewExcercise
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
-            testOutputHelper.WriteLine("Response Code is: " + response.StatusCode);
-            testOutputHelper.WriteLine("Response Content is: " + response.Content);
+            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
                     .Should().Contain("{\"field\":\"email\",\"message\":\"is invalid\"}");
         }
 
-        [Fact]
+        [Test]
         public void PostUserWithoutDomainInMail()
         {
             var postUserRequest = GeneratePostUserRequest();
@@ -152,15 +181,15 @@ namespace InterviewExcercise
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
-            testOutputHelper.WriteLine("Response Code is: " + response.StatusCode);
-            testOutputHelper.WriteLine("Response Content is: " + response.Content);
+            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
                     .Should().Contain("{\"field\":\"email\",\"message\":\"is invalid\"}");
         }
 
-        [Fact]
+        [Test]
         public void PostUserWithoutAtInMail()
         {
             var postUserRequest = GeneratePostUserRequest();
@@ -169,8 +198,8 @@ namespace InterviewExcercise
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
-            testOutputHelper.WriteLine("Response Code is: " + response.StatusCode);
-            testOutputHelper.WriteLine("Response Content is: " + response.Content);
+            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -179,7 +208,7 @@ namespace InterviewExcercise
 
         public PostUserRequest GeneratePostUserRequest()
         {
-            testOutputHelper.WriteLine("Generating Post User Request");
+            ReportFixture.Instance.SetStepStatusPass("Generating Post User Request");
             var randomGenerator = new Random();
 
             return new PostUserRequest()

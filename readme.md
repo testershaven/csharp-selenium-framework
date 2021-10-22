@@ -25,4 +25,5 @@ Net core project is divided in the followings
 ## How to execute it 
 
  1. Install Net core 5
- 2. execute ''dotnet test --logger html'' in console standing on folder where is .sln file
+ 2. execute ''dotnet test'' in console standing on folder where is .sln file
+ 3. Html Report will be automatically created on the base folder under the ExtentReport.html name

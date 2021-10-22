@@ -1,6 +1,6 @@
-﻿using RestSharp;
+﻿using InterviewExcercise.Reporter;
+using RestSharp;
 using RestSharp.Serialization.Json;
-using Xunit.Abstractions;
 
 namespace InterviewExcercise.ApiClient.Endpoints
 {
@@ -13,16 +13,16 @@ namespace InterviewExcercise.ApiClient.Endpoints
 
         private RestClient restClient;
 
-        public RestClientFixture(ITestOutputHelper outputHelper)
+        public RestClientFixture(ExtentReportsHelper extent)
         {
             restClient = new RestClient("https://gorest.co.in");
             restClient.AddDefaultHeader("Authorization", "Bearer 9bf5db212a21ef7b4837e826efd6b9ca594e52044a03ee0dd98ab400619fb2b8");
             restClient.UseSerializer(() => new JsonSerializer { DateFormat = "yyyy-MM-ddTHH:mm:ss.FFFFFFFZ" });
 
-            UserEndpoint = new UserEndpoint(restClient, outputHelper);
-            PostEndpoint = new PostEndpoint(restClient, outputHelper);
-            CommentEndpoint = new CommentEndpoint(restClient, outputHelper);
-            ToDoEndpoint = new ToDoEndpoint(restClient, outputHelper);
+            UserEndpoint = new UserEndpoint(restClient, extent);
+            PostEndpoint = new PostEndpoint(restClient, extent);
+            CommentEndpoint = new CommentEndpoint(restClient, extent);
+            ToDoEndpoint = new ToDoEndpoint(restClient, extent);
         }
     }
 }

@@ -1,23 +1,23 @@
 ﻿using InterviewExcercise.ApiClient.Requests;
+using InterviewExcercise.Reporter;
 using RestSharp;
-using Xunit.Abstractions;
 
 namespace InterviewExcercise.ApiClient.Endpoints
 {
     public class UserEndpoint
     {
         private RestClient client;
-        private readonly ITestOutputHelper outputHelper;
+        private readonly ExtentReportsHelper extent;
 
-        public UserEndpoint(RestClient restClient, ITestOutputHelper outputHelper)
+        public UserEndpoint(RestClient restClient, ExtentReportsHelper outputHelper)
         {
             client = restClient;
-            this.outputHelper = outputHelper;
+            this.extent = outputHelper;
         }
 
         public IRestResponse PostUser(PostUserRequest requestBody)
         {
-            outputHelper.WriteLine("Posting User");
+            extent.SetStepStatusPass("Posting User");
             var request = new RestRequest("/public/v1/users");
             request.JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer();
             request.AddJsonBody(requestBody);
@@ -27,7 +27,7 @@ namespace InterviewExcercise.ApiClient.Endpoints
         //Not Implementing Pagination as out of scope
         public IRestResponse GetActiveUsers()
         {
-            outputHelper.WriteLine("Getting active users");
+            extent.SetStepStatusPass("Getting active users");
             var request = new RestRequest("/public/v1/users?status=active");
             request.JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer();
             return client.Get(request);
