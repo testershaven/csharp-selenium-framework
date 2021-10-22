@@ -20,7 +20,7 @@ Net core project is divided in the followings
 	- InterviewExcercise
 		- ApiClient -> Classes with RestClient with respective endpoints, requests and responses
 		- Tests -> Test classes separated by functionalities and respecting atomicity of tests
-		- TestResults -> Folder where html report are deposited
+		- Reporter -> Classes
 
 ## How to execute it 
 
