@@ -2,27 +2,31 @@
 using InterviewExcercise.ApiClient.Endpoints;
 using InterviewExcercise.ApiClient.Requests;
 using InterviewExcercise.ApiClient.Responses;
+using System.Linq;
 using System.Net;
+using System.Text.Json;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace InterviewExcercise
 {
-    [Collection("Api Tests")]
-    public class CommentTests : IClassFixture<RestClientFixture>
+    public class CommentTests
     {
         private readonly RestClientFixture restClient;
+        private readonly ITestOutputHelper testOutputHelper;
+        private UserData commentUser;
+        private PostData post;
 
-        private static PostUserResponse postUser;
-        private static PostUserResponse commentUser;
-        private static CreatePostResponse postInfo;
-
-        public CommentTests(RestClientFixture restClientFixture)
+        public CommentTests(ITestOutputHelper testOutputHelper)
         {
-            restClient = restClientFixture;
+            if (restClient == null)
+            {
+                restClient = new RestClientFixture(testOutputHelper);
+                this.testOutputHelper = testOutputHelper;
+                getRandomPost();
+                getRandomUser();
+            }
 
-            postUser = postUser == null ? restClient.UserEndpoint.GenerateRandomUser() : postUser;
-            postInfo = postInfo == null ? restClient.PostEndpoint.GeneratePost(postUser.data.id) : postInfo;
-            commentUser = commentUser == null ? restClient.UserEndpoint.GenerateRandomUser() : commentUser;
         }
 
         [Fact]
@@ -30,12 +34,15 @@ namespace InterviewExcercise
         {
             var request = new PostCommentRequest()
             {
-                Name = commentUser.data.name,
-                Email = commentUser.data.email,
+                Name = commentUser.name,
+                Email = commentUser.email,
                 Body = "This is a test body"
             };
 
-            var postResponse = restClient.CommentEndpoint.PostComment(request, postInfo.data.id);
+            var postResponse = restClient.CommentEndpoint.PostComment(request, post.id);
+
+            testOutputHelper.WriteLine("Response Code is: " + postResponse.StatusCode);
+            testOutputHelper.WriteLine("Response Content is: " + postResponse.Content);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.Created);
             postResponse.Content.Should().Contain(request.Name);
@@ -49,11 +56,15 @@ namespace InterviewExcercise
             var request = new PostCommentRequest()
             {
                 Name = null,
-                Email = commentUser.data.email,
+                Email = commentUser.email,
                 Body = "This is a test body"
             };
 
-            var postResponse = restClient.CommentEndpoint.PostComment(request, postInfo.data.id);
+            var postResponse = restClient.CommentEndpoint.PostComment(request, post.id);
+
+            testOutputHelper.WriteLine("Response Code is: " + postResponse.StatusCode);
+            testOutputHelper.WriteLine("Response Content is: " + postResponse.Content);
+
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"name\",\"message\":\"can't be blank\"}");
@@ -64,12 +75,15 @@ namespace InterviewExcercise
         {
             var request = new PostCommentRequest()
             {
-                Name = commentUser.data.name,
+                Name = commentUser.name,
                 Email = null,
                 Body = "This is a test body"
             };
 
-            var postResponse = restClient.CommentEndpoint.PostComment(request, postInfo.data.id);
+            var postResponse = restClient.CommentEndpoint.PostComment(request, post.id);
+
+            testOutputHelper.WriteLine("Response Code is: " + postResponse.StatusCode);
+            testOutputHelper.WriteLine("Response Content is: " + postResponse.Content);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"email\",\"message\":\"can't be blank\"}");
@@ -80,12 +94,15 @@ namespace InterviewExcercise
         {
             var request = new PostCommentRequest()
             {
-                Name = commentUser.data.name,
-                Email = commentUser.data.email,
+                Name = commentUser.name,
+                Email = commentUser.email,
                 Body = null
             };
 
-            var postResponse = restClient.CommentEndpoint.PostComment(request, postInfo.data.id);
+            var postResponse = restClient.CommentEndpoint.PostComment(request, post.id);
+
+            testOutputHelper.WriteLine("Response Code is: " + postResponse.StatusCode);
+            testOutputHelper.WriteLine("Response Content is: " + postResponse.Content);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"body\",\"message\":\"can't be blank\"}");
@@ -96,15 +113,34 @@ namespace InterviewExcercise
         {
             var request = new PostCommentRequest()
             {
-                Name = commentUser.data.name,
-                Email = commentUser.data.email,
+                Name = commentUser.name,
+                Email = commentUser.email,
                 Body = "This is a test body"
             };
 
             var postResponse = restClient.CommentEndpoint.PostComment(request, -1);
 
+            testOutputHelper.WriteLine("Response Code is: " + postResponse.StatusCode);
+            testOutputHelper.WriteLine("Response Content is: " + postResponse.Content);
+
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"post\",\"message\":\"must exist\"}");
+        }
+
+        private void getRandomUser()
+        {
+            testOutputHelper.WriteLine("Picking a random user");
+            var response = restClient.UserEndpoint.GetActiveUsers();
+            var users = JsonSerializer.Deserialize<GetUsersResponse>(response.Content);
+            commentUser = users.data.Take(1).First();
+        }
+
+        private void getRandomPost()
+        {
+            testOutputHelper.WriteLine("Picking a random post");
+            var response = restClient.PostEndpoint.GetPosts();
+            var users = JsonSerializer.Deserialize<GetPostsResponse>(response.Content);
+            post = users.data.Take(1).First();
         }
     }
 }

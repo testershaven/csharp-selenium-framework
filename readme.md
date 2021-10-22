@@ -17,13 +17,12 @@ With the tooling of your choice, create a test suite for this API to test at lea
 
 Net core project is divided in the followings
 
-	- CloudmoreTestProject
-		- bin/debug/net5.0 (There will be deposited html reports and screenshots)
-		- Pages (POM pages for ui interactions)
-		- Reporter (Logic for Reporter)
-		- UiTests.cs (ui tests)
+	- InterviewExcercise
+		- ApiClient -> Classes with RestClient with respective endpoints, requests and responses
+		- Tests -> Test classes separated by functionalities and respecting atomicity of tests
+		- TestResults -> Folder where html report are deposited
 
 ## How to execute it 
 
  1. Install Net core 5
- 2. execute dotnet test in console standing on folder where is .sln
+ 2. execute ''dotnet test --logger html'' in console standing on folder where is .sln file

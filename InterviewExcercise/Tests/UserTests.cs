@@ -4,33 +4,40 @@ using InterviewExcercise.ApiClient.Requests;
 using System;
 using System.Net;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace InterviewExcercise
 {
-    [Collection("Api Tests")]
-    public class UserTests : IClassFixture<RestClientFixture>
+    public class UserTests
     {
         private readonly RestClientFixture restClient;
+        private readonly ITestOutputHelper testOutputHelper;
 
-        public UserTests(RestClientFixture restClientFixture)
+        public UserTests(ITestOutputHelper testOutputHelper)
         {
-            restClient = restClientFixture;
+            if (restClient == null)
+            {
+                restClient = new RestClientFixture(testOutputHelper);
+                this.testOutputHelper = testOutputHelper;
+            }
         }
 
         [Fact]
         public void CreateUserSuccesfully()
         {
             var postUserRequest = GeneratePostUserRequest();
-            
+
             var userCreationResponse = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
+            testOutputHelper.WriteLine("Response Code is: " + userCreationResponse.StatusCode);
+            testOutputHelper.WriteLine("Response Content is: " + userCreationResponse.Content);
             userCreationResponse.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
         [Fact]
-        public void CreateUserWithExistingEmail() {
-
+        public void CreateUserWithExistingEmail()
+        {
             var firstUser = GeneratePostUserRequest();
 
             restClient.UserEndpoint.PostUser(firstUser);
@@ -41,6 +48,9 @@ namespace InterviewExcercise
             var secondUserResponse = restClient.UserEndpoint
                                         .PostUser(secondUser);
 
+            testOutputHelper.WriteLine("Response Code is: " + secondUserResponse.StatusCode);
+            testOutputHelper.WriteLine("Response Content is: " + secondUserResponse.Content);
+
             secondUserResponse.StatusCode
                 .Should().Be(HttpStatusCode.UnprocessableEntity);
             secondUserResponse.Content
@@ -48,12 +58,16 @@ namespace InterviewExcercise
         }
 
         [Fact]
-        public void PostUserWithoutName() {
+        public void PostUserWithoutName()
+        {
             var postUserRequest = GeneratePostUserRequest();
             postUserRequest.Name = null;
 
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
+
+            testOutputHelper.WriteLine("Response Code is: " + response.StatusCode);
+            testOutputHelper.WriteLine("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -62,12 +76,16 @@ namespace InterviewExcercise
         }
 
         [Fact]
-        public void PostUserWithoutEmail() {
+        public void PostUserWithoutEmail()
+        {
             var postUserRequest = GeneratePostUserRequest();
             postUserRequest.Email = null;
 
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
+
+            testOutputHelper.WriteLine("Response Code is: " + response.StatusCode);
+            testOutputHelper.WriteLine("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -75,12 +93,16 @@ namespace InterviewExcercise
         }
 
         [Fact]
-        public void PostUserWithoutGender() {
+        public void PostUserWithoutGender()
+        {
             var postUserRequest = GeneratePostUserRequest();
             postUserRequest.Gender = null;
 
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
+
+            testOutputHelper.WriteLine("Response Code is: " + response.StatusCode);
+            testOutputHelper.WriteLine("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -88,12 +110,16 @@ namespace InterviewExcercise
         }
 
         [Fact]
-        public void PostUserWithoutStatus() {
+        public void PostUserWithoutStatus()
+        {
             var postUserRequest = GeneratePostUserRequest();
             postUserRequest.Status = null;
 
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
+
+            testOutputHelper.WriteLine("Response Code is: " + response.StatusCode);
+            testOutputHelper.WriteLine("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -109,6 +135,9 @@ namespace InterviewExcercise
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
+            testOutputHelper.WriteLine("Response Code is: " + response.StatusCode);
+            testOutputHelper.WriteLine("Response Content is: " + response.Content);
+
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
                     .Should().Contain("{\"field\":\"email\",\"message\":\"is invalid\"}");
@@ -122,6 +151,9 @@ namespace InterviewExcercise
 
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
+
+            testOutputHelper.WriteLine("Response Code is: " + response.StatusCode);
+            testOutputHelper.WriteLine("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -137,6 +169,9 @@ namespace InterviewExcercise
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
+            testOutputHelper.WriteLine("Response Code is: " + response.StatusCode);
+            testOutputHelper.WriteLine("Response Content is: " + response.Content);
+
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
                     .Should().Contain("{\"field\":\"email\",\"message\":\"is invalid\"}");
@@ -144,6 +179,7 @@ namespace InterviewExcercise
 
         public PostUserRequest GeneratePostUserRequest()
         {
+            testOutputHelper.WriteLine("Generating Post User Request");
             var randomGenerator = new Random();
 
             return new PostUserRequest()
@@ -155,4 +191,4 @@ namespace InterviewExcercise
             };
         }
     }
-}   
+}

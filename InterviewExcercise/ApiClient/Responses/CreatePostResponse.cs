@@ -3,6 +3,6 @@
     public class CreatePostResponse
     {
         public string meta { get; set; }
-        public CreatePostData data { get; set; }
+        public PostData data { get; set; }
     }
 }

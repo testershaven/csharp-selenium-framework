@@ -531,6 +531,7 @@ FodyWeavers.xsd
 *.msm
 *.msp
 .vscode/
+TestResults/
 
 # JetBrains Rider
 

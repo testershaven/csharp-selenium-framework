@@ -1,21 +1,23 @@
 ﻿using InterviewExcercise.ApiClient.Requests;
-using InterviewExcercise.ApiClient.Responses;
 using RestSharp;
-using System.Text.Json;
+using Xunit.Abstractions;
 
 namespace InterviewExcercise.ApiClient.Endpoints
 {
     public class PostEndpoint
     {
         private RestClient client;
+        private readonly ITestOutputHelper outputHelper;
 
-        public PostEndpoint(RestClient restClient)
+        public PostEndpoint(RestClient restClient, ITestOutputHelper outputHelper)
         {
             client = restClient;
+            this.outputHelper = outputHelper;
         }
 
         public IRestResponse CreatePost(CreatePostRequest requestBody, int userId)
         {
+            outputHelper.WriteLine("Posting Post");
             var request = new RestRequest($"/public/v1/users/{userId}/posts");
             request.JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer();
             request.AddJsonBody(requestBody);
@@ -23,18 +25,12 @@ namespace InterviewExcercise.ApiClient.Endpoints
 
         }
 
-        public CreatePostResponse GeneratePost(int userId)
+        public IRestResponse GetPosts()
         {
-            var request = new CreatePostRequest()
-            {
-                User = "This is a test name",
-                Title = "This is the title for a test",
-                Body = "This is a test body"
-            };
-
-            var postResponse = CreatePost(request, userId).Content;
-
-            return JsonSerializer.Deserialize<CreatePostResponse>(postResponse);
+            outputHelper.WriteLine("Getting list of posts");
+            var request = new RestRequest($"/public/v1/posts");
+            request.JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer();
+            return client.Get(request);
         }
     }
 }
