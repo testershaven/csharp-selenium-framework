@@ -1,5 +1,7 @@
 ﻿using AventStack.ExtentReports;
 using AventStack.ExtentReports.Reporter;
+using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 using System;
 using System.IO;
 
@@ -62,6 +64,26 @@ namespace InterviewExcercise.Reporter
         public void Close()
         {
             extent.Flush();
+        }
+
+        public void EndTest(TestContext testContext)
+        {
+            var status = testContext.Result.Outcome.Status;
+            var stacktrace = testContext.Result.StackTrace;
+            var errorMessage = "<pre>" + testContext.Result.Message + "</pre>";
+            switch (status)
+            {
+                case TestStatus.Failed:
+                    SetTestStatusFail($"<br>{errorMessage}<br>Stack Trace: <br>{stacktrace}<br>");
+                    break;
+                case TestStatus.Skipped:
+                    SetTestStatusSkipped();
+                    break;
+                default:
+                    SetTestStatusPass();
+                    break;
+            }
+
         }
     }
 }

@@ -32,21 +32,7 @@ namespace InterviewExcercise
         [TearDown]
         public void AfterTest()
         {
-            var status = TestContext.CurrentContext.Result.Outcome.Status;
-            var stacktrace = TestContext.CurrentContext.Result.StackTrace;
-            var errorMessage = "<pre>" + TestContext.CurrentContext.Result.Message + "</pre>";
-            switch (status)
-            {
-                case TestStatus.Failed:
-                    ReportFixture.Instance.SetTestStatusFail($"<br>{errorMessage}<br>Stack Trace: <br>{stacktrace}<br>");
-                    break;
-                case TestStatus.Skipped:
-                    ReportFixture.Instance.SetTestStatusSkipped();
-                    break;
-                default:
-                    ReportFixture.Instance.SetTestStatusPass();
-                    break;
-            }
+            ReportFixture.Instance.EndTest(TestContext.CurrentContext);
         }
 
         [SetUp]
