@@ -9,6 +9,13 @@ namespace InterviewExcercise.Tests
 {
     public class HomePageTests
     {
+        [SetUp]
+        public void Setup()
+        {
+            ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name);
+        }
+
+        [OneTimeTearDown]
         public void CloseAll()
         {
             ReportFixture.Instance.Close();
@@ -17,27 +24,7 @@ namespace InterviewExcercise.Tests
         [TearDown]
         public void AfterTest()
         {
-            var status = TestContext.CurrentContext.Result.Outcome.Status;
-            var stacktrace = TestContext.CurrentContext.Result.StackTrace;
-            var errorMessage = "<pre>" + TestContext.CurrentContext.Result.Message + "</pre>";
-            switch (status)
-            {
-                case TestStatus.Failed:
-                    ReportFixture.Instance.SetTestStatusFail($"<br>{errorMessage}<br>Stack Trace: <br>{stacktrace}<br>");
-                    break;
-                case TestStatus.Skipped:
-                    ReportFixture.Instance.SetTestStatusSkipped();
-                    break;
-                default:
-                    ReportFixture.Instance.SetTestStatusPass();
-                    break;
-            }
-        }
-
-        [SetUp]
-        public void Setup()
-        {
-            ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name);
+            ReportFixture.Instance.EndTest(TestContext.CurrentContext);
         }
 
         [Test]
