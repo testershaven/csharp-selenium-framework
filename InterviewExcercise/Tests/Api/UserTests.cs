@@ -3,12 +3,12 @@ using InterviewExcercise.ApiClient.Endpoints;
 using InterviewExcercise.ApiClient.Requests;
 using InterviewExcercise.Reporter;
 using NUnit.Framework;
-using NUnit.Framework.Interfaces;
 using System;
 using System.Net;
 
 namespace InterviewExcercise
 {
+    [Category("Api-UserTests")]
     public class UserTests
     {
         private RestClientFixture restClient;
@@ -16,7 +16,7 @@ namespace InterviewExcercise
         [OneTimeSetUp]
         public void SetUpReporter()
         {
-            restClient = new RestClientFixture(ReportFixture.Instance);
+            restClient = new RestClientFixture();
         }
 
         [OneTimeTearDown]
@@ -28,27 +28,13 @@ namespace InterviewExcercise
         [SetUp]
         public void Setup()
         {
-            ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name);
+            ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name, TestContext.CurrentContext.Test.ClassName);
         }
 
         [TearDown]
         public void AfterTest()
         {
-            var status = TestContext.CurrentContext.Result.Outcome.Status;
-            var stacktrace = TestContext.CurrentContext.Result.StackTrace;
-            var errorMessage = "<pre>" + TestContext.CurrentContext.Result.Message + "</pre>";
-            switch (status)
-            {
-                case TestStatus.Failed:
-                    ReportFixture.Instance.SetTestStatusFail($"<br>{errorMessage}<br>Stack Trace: <br>{stacktrace}<br>");
-                    break;
-                case TestStatus.Skipped:
-                    ReportFixture.Instance.SetTestStatusSkipped();
-                    break;
-                default:
-                    ReportFixture.Instance.SetTestStatusPass();
-                    break;
-            }
+            ReportFixture.Instance.EndTest(TestContext.CurrentContext);
         }
 
         [Test]

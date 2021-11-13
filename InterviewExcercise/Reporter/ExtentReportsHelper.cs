@@ -1,5 +1,7 @@
 ﻿using AventStack.ExtentReports;
 using AventStack.ExtentReports.Reporter;
+using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 using System;
 using System.IO;
 
@@ -24,9 +26,10 @@ namespace InterviewExcercise.Reporter
             extent.AddSystemInfo("Machine", Environment.MachineName);
             extent.AddSystemInfo("OS", Environment.OSVersion.VersionString);
         }
-        public void CreateTest(string testName)
+        public void CreateTest(string testName, string category)
         {
             test = extent.CreateTest(testName);
+            test.AssignCategory(category);
         }
         public void SetStepStatusPass(string stepDescription)
         {
@@ -62,6 +65,26 @@ namespace InterviewExcercise.Reporter
         public void Close()
         {
             extent.Flush();
+        }
+
+        public void EndTest(TestContext testContext)
+        {
+            var status = testContext.Result.Outcome.Status;
+            var stacktrace = testContext.Result.StackTrace;
+            var errorMessage = "<pre>" + testContext.Result.Message + "</pre>";
+            switch (status)
+            {
+                case TestStatus.Failed:
+                    SetTestStatusFail($"<br>{errorMessage}<br>Stack Trace: <br>{stacktrace}<br>");
+                    break;
+                case TestStatus.Skipped:
+                    SetTestStatusSkipped();
+                    break;
+                default:
+                    SetTestStatusPass();
+                    break;
+            }
+
         }
     }
 }

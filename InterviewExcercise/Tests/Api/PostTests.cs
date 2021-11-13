@@ -20,7 +20,7 @@ namespace InterviewExcercise
         [OneTimeSetUp]
         public void SetUpReporter()
         {
-            restClient = new RestClientFixture(ReportFixture.Instance);
+            restClient = new RestClientFixture();
         }
         [OneTimeTearDown]
         public void CloseAll()
@@ -31,27 +31,13 @@ namespace InterviewExcercise
         [TearDown]
         public void AfterTest()
         {
-            var status = TestContext.CurrentContext.Result.Outcome.Status;
-            var stacktrace = TestContext.CurrentContext.Result.StackTrace;
-            var errorMessage = "<pre>" + TestContext.CurrentContext.Result.Message + "</pre>";
-            switch (status)
-            {
-                case TestStatus.Failed:
-                    ReportFixture.Instance.SetTestStatusFail($"<br>{errorMessage}<br>Stack Trace: <br>{stacktrace}<br>");
-                    break;
-                case TestStatus.Skipped:
-                    ReportFixture.Instance.SetTestStatusSkipped();
-                    break;
-                default:
-                    ReportFixture.Instance.SetTestStatusPass();
-                    break;
-            }
+            ReportFixture.Instance.EndTest(TestContext.CurrentContext);
         }
 
         [SetUp]
         public void Setup()
         {
-            ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name);
+            ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name, TestContext.CurrentContext.Test.ClassName);
             if (postUser == null) getRandomUser();
 
         }
