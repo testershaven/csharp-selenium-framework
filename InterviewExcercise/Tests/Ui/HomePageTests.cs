@@ -12,7 +12,7 @@ namespace InterviewExcercise.Tests
         [SetUp]
         public void Setup()
         {
-            ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name);
+            ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name, TestContext.CurrentContext.Test.ClassName);
         }
 
         [OneTimeTearDown]

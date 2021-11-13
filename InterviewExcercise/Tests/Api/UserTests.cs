@@ -3,12 +3,12 @@ using InterviewExcercise.ApiClient.Endpoints;
 using InterviewExcercise.ApiClient.Requests;
 using InterviewExcercise.Reporter;
 using NUnit.Framework;
-using NUnit.Framework.Interfaces;
 using System;
 using System.Net;
 
 namespace InterviewExcercise
 {
+    [Category("Api-UserTests")]
     public class UserTests
     {
         private RestClientFixture restClient;
@@ -16,7 +16,7 @@ namespace InterviewExcercise
         [OneTimeSetUp]
         public void SetUpReporter()
         {
-            restClient = new RestClientFixture(ReportFixture.Instance);
+            restClient = new RestClientFixture();
         }
 
         [OneTimeTearDown]
@@ -28,7 +28,7 @@ namespace InterviewExcercise
         [SetUp]
         public void Setup()
         {
-            ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name);
+            ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name, TestContext.CurrentContext.Test.ClassName);
         }
 
         [TearDown]

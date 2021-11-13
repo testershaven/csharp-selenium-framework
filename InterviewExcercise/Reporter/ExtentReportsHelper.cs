@@ -26,9 +26,10 @@ namespace InterviewExcercise.Reporter
             extent.AddSystemInfo("Machine", Environment.MachineName);
             extent.AddSystemInfo("OS", Environment.OSVersion.VersionString);
         }
-        public void CreateTest(string testName)
+        public void CreateTest(string testName, string category)
         {
             test = extent.CreateTest(testName);
+            test.AssignCategory(category);
         }
         public void SetStepStatusPass(string stepDescription)
         {

@@ -20,8 +20,9 @@ namespace InterviewExcercise
         [OneTimeSetUp]
         public void SetUpReporter()
         {
-            restClient = new RestClientFixture(ReportFixture.Instance);
+            restClient = new RestClientFixture();
         }
+
         [OneTimeTearDown]
         public void CloseAll()
         {
@@ -37,7 +38,7 @@ namespace InterviewExcercise
         [SetUp]
         public void Setup()
         {
-            ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name);
+            ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name, TestContext.CurrentContext.Test.ClassName);
             if (commentUser == null) getRandomUser();
             if (post == null) getRandomPost();
         }
