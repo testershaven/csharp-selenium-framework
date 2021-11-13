@@ -18,7 +18,7 @@ namespace InterviewExcercise.UiClient.Pages
 
         public void Load()
         {
-            Driver.Navigate().GoToUrl("https://yolo.group/");
+            Driver.Navigate().GoToUrl(ConfigFixture.Instance["UiClient:HomePage"]);
             WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
 
             wait.Until(condition => logo.Displayed);
