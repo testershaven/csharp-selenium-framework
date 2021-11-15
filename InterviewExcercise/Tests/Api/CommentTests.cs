@@ -4,7 +4,6 @@ using InterviewExcercise.ApiClient.Requests;
 using InterviewExcercise.ApiClient.Responses;
 using InterviewExcercise.Reporter;
 using NUnit.Framework;
-using NUnit.Framework.Interfaces;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
@@ -21,24 +20,25 @@ namespace InterviewExcercise
         public void SetUpReporter()
         {
             restClient = new RestClientFixture();
+            ExtentTestManager.CreateParentTest(TestContext.CurrentContext.Test.ClassName);
         }
 
         [OneTimeTearDown]
         public void CloseAll()
         {
-            ReportFixture.Instance.Close();
+            ExtentManager.Instance.Flush();
         }
 
         [TearDown]
         public void AfterTest()
         {
-            ReportFixture.Instance.EndTest(TestContext.CurrentContext);
+            ExtentTestManager.EndTest();
         }
 
         [SetUp]
         public void Setup()
         {
-            ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name, TestContext.CurrentContext.Test.ClassName);
+            ExtentTestManager.CreateTest(TestContext.CurrentContext.Test.Name);
             if (commentUser == null) getRandomUser();
             if (post == null) getRandomPost();
         }
@@ -55,8 +55,8 @@ namespace InterviewExcercise
 
             var postResponse = restClient.CommentEndpoint.PostComment(request, post.id);
 
-            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
-            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + postResponse.Content);
+            ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
+            ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.Created);
             postResponse.Content.Should().Contain(request.Name);
@@ -76,8 +76,8 @@ namespace InterviewExcercise
 
             var postResponse = restClient.CommentEndpoint.PostComment(request, post.id);
 
-            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
-            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + postResponse.Content);
+            ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
+            ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
 
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
@@ -96,8 +96,8 @@ namespace InterviewExcercise
 
             var postResponse = restClient.CommentEndpoint.PostComment(request, post.id);
 
-            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
-            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + postResponse.Content);
+            ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
+            ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"email\",\"message\":\"can't be blank\"}");
@@ -115,8 +115,8 @@ namespace InterviewExcercise
 
             var postResponse = restClient.CommentEndpoint.PostComment(request, post.id);
 
-            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
-            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + postResponse.Content);
+            ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
+            ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"body\",\"message\":\"can't be blank\"}");
@@ -134,8 +134,8 @@ namespace InterviewExcercise
 
             var postResponse = restClient.CommentEndpoint.PostComment(request, -1);
 
-            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
-            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + postResponse.Content);
+            ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
+            ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"post\",\"message\":\"must exist\"}");
@@ -143,7 +143,7 @@ namespace InterviewExcercise
 
         private void getRandomUser()
         {
-            ReportFixture.Instance.SetStepStatusPass("Picking a random user");
+            ExtentTestManager.SetStepStatusPass("Picking a random user");
             var response = restClient.UserEndpoint.GetActiveUsers();
             var users = JsonSerializer.Deserialize<GetUsersResponse>(response.Content);
             commentUser = users.data.Take(1).First();
@@ -151,7 +151,7 @@ namespace InterviewExcercise
 
         private void getRandomPost()
         {
-            ReportFixture.Instance.SetStepStatusPass("Picking a random post");
+            ExtentTestManager.SetStepStatusPass("Picking a random post");
             var response = restClient.PostEndpoint.GetPosts();
             var users = JsonSerializer.Deserialize<GetPostsResponse>(response.Content);
             post = users.data.Take(1).First();

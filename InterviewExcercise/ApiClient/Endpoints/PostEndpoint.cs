@@ -7,17 +7,15 @@ namespace InterviewExcercise.ApiClient.Endpoints
     public class PostEndpoint
     {
         private RestClient client;
-        private readonly ExtentReportsHelper outputHelper;
 
-        public PostEndpoint(RestClient restClient, ExtentReportsHelper outputHelper)
+        public PostEndpoint(RestClient restClient)
         {
             client = restClient;
-            this.outputHelper = outputHelper;
         }
 
         public IRestResponse CreatePost(CreatePostRequest requestBody, int userId)
         {
-            outputHelper.SetStepStatusPass("Posting Post");
+            ExtentTestManager.SetStepStatusPass("Posting Post");
             var request = new RestRequest($"/public/v1/users/{userId}/posts");
             request.JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer();
             request.AddJsonBody(requestBody);
@@ -27,7 +25,7 @@ namespace InterviewExcercise.ApiClient.Endpoints
 
         public IRestResponse GetPosts()
         {
-            outputHelper.SetStepStatusPass("Getting list of posts");
+            ExtentTestManager.SetStepStatusPass("Getting list of posts");
             var request = new RestRequest($"/public/v1/posts");
             request.JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer();
             return client.Get(request);

@@ -17,24 +17,26 @@ namespace InterviewExcercise
         public void SetUpReporter()
         {
             restClient = new RestClientFixture();
+            ExtentTestManager.CreateParentTest(TestContext.CurrentContext.Test.ClassName);
+
         }
 
         [OneTimeTearDown]
         public void CloseAll()
         {
-            ReportFixture.Instance.Close();
+            ExtentManager.Instance.Flush();
         }
 
         [SetUp]
         public void Setup()
         {
-            ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name, TestContext.CurrentContext.Test.ClassName);
+            ExtentTestManager.CreateTest(TestContext.CurrentContext.Test.Name);
         }
 
         [TearDown]
         public void AfterTest()
         {
-            ReportFixture.Instance.EndTest(TestContext.CurrentContext);
+            ExtentTestManager.EndTest();
         }
 
         [Test]
@@ -45,8 +47,8 @@ namespace InterviewExcercise
             var userCreationResponse = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
-            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + userCreationResponse.StatusCode);
-            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + userCreationResponse.Content);
+            ExtentTestManager.SetStepStatusPass("Response Code is: " + userCreationResponse.StatusCode);
+            ExtentTestManager.SetStepStatusPass("Response Content is: " + userCreationResponse.Content);
             userCreationResponse.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
@@ -63,8 +65,8 @@ namespace InterviewExcercise
             var secondUserResponse = restClient.UserEndpoint
                                         .PostUser(secondUser);
 
-            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + secondUserResponse.StatusCode);
-            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + secondUserResponse.Content);
+            ExtentTestManager.SetStepStatusPass("Response Code is: " + secondUserResponse.StatusCode);
+            ExtentTestManager.SetStepStatusPass("Response Content is: " + secondUserResponse.Content);
 
             secondUserResponse.StatusCode
                 .Should().Be(HttpStatusCode.UnprocessableEntity);
@@ -81,8 +83,8 @@ namespace InterviewExcercise
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
-            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + response.StatusCode);
-            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + response.Content);
+            ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -99,8 +101,8 @@ namespace InterviewExcercise
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
-            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + response.StatusCode);
-            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + response.Content);
+            ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -116,8 +118,8 @@ namespace InterviewExcercise
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
-            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + response.StatusCode);
-            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + response.Content);
+            ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -133,8 +135,8 @@ namespace InterviewExcercise
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
-            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + response.StatusCode);
-            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + response.Content);
+            ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -150,8 +152,8 @@ namespace InterviewExcercise
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
-            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + response.StatusCode);
-            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + response.Content);
+            ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -167,8 +169,8 @@ namespace InterviewExcercise
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
-            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + response.StatusCode);
-            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + response.Content);
+            ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -184,8 +186,8 @@ namespace InterviewExcercise
             var response = restClient.UserEndpoint
                                             .PostUser(postUserRequest);
 
-            ReportFixture.Instance.SetStepStatusPass("Response Code is: " + response.StatusCode);
-            ReportFixture.Instance.SetStepStatusPass("Response Content is: " + response.Content);
+            ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -194,7 +196,7 @@ namespace InterviewExcercise
 
         public PostUserRequest GeneratePostUserRequest()
         {
-            ReportFixture.Instance.SetStepStatusPass("Generating Post User Request");
+            ExtentTestManager.SetStepStatusPass("Generating Post User Request");
             var randomGenerator = new Random();
 
             return new PostUserRequest()

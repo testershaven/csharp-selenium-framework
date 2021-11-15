@@ -1,30 +1,35 @@
 ﻿using InterviewExcercise.Reporter;
 using InterviewExcercise.UiClient.Pages;
 using NUnit.Framework;
-using NUnit.Framework.Interfaces;
 using OpenQA.Selenium.Chrome;
-using System.Threading;
 
 namespace InterviewExcercise.Tests
 {
     public class HomePageTests
     {
+
+        [OneTimeSetUp]
+        public void SetUpReporter()
+        {
+            ExtentTestManager.CreateParentTest(TestContext.CurrentContext.Test.ClassName);
+        }
+
         [SetUp]
         public void Setup()
         {
-            ReportFixture.Instance.CreateTest(TestContext.CurrentContext.Test.Name, TestContext.CurrentContext.Test.ClassName);
+            ExtentTestManager.CreateTest(TestContext.CurrentContext.Test.Name, TestContext.CurrentContext.Test.ClassName);
         }
 
         [OneTimeTearDown]
         public void CloseAll()
         {
-            ReportFixture.Instance.Close();
+            ExtentManager.Instance.Flush();
         }
 
         [TearDown]
         public void AfterTest()
         {
-            ReportFixture.Instance.EndTest(TestContext.CurrentContext);
+            ExtentTestManager.EndTest();
         }
 
         [Test]
@@ -36,7 +41,7 @@ namespace InterviewExcercise.Tests
                 homePage.Load();
 
                 Assert.True(homePage.IsLogoDisplayed());
-                ReportFixture.Instance.SetStepStatusPass("Logo is correctly displayed");
+                ExtentTestManager.SetStepStatusPass("Logo is correctly displayed");
             }
         }
     }

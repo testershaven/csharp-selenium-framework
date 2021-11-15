@@ -1,8 +1,5 @@
-﻿using InterviewExcercise.Reporter;
-using Microsoft.Extensions.Configuration;
-using RestSharp;
+﻿using RestSharp;
 using RestSharp.Serialization.Json;
-using System.IO;
 
 namespace InterviewExcercise.ApiClient.Endpoints
 {
@@ -21,10 +18,10 @@ namespace InterviewExcercise.ApiClient.Endpoints
             restClient.AddDefaultHeader("Authorization", ConfigFixture.Instance["ApiClient:Token"]);
             restClient.UseSerializer(() => new JsonSerializer { DateFormat = "yyyy-MM-ddTHH:mm:ss.FFFFFFFZ" });
 
-            UserEndpoint = new UserEndpoint(restClient, ReportFixture.Instance);
-            PostEndpoint = new PostEndpoint(restClient, ReportFixture.Instance);
-            CommentEndpoint = new CommentEndpoint(restClient, ReportFixture.Instance);
-            ToDoEndpoint = new ToDoEndpoint(restClient, ReportFixture.Instance);
+            UserEndpoint = new UserEndpoint(restClient);
+            PostEndpoint = new PostEndpoint(restClient);
+            CommentEndpoint = new CommentEndpoint(restClient);
+            ToDoEndpoint = new ToDoEndpoint(restClient);
         }
     }
 }

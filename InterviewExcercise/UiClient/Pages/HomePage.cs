@@ -22,7 +22,7 @@ namespace InterviewExcercise.UiClient.Pages
             WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
 
             wait.Until(condition => logo.Displayed);
-            ReportFixture.Instance.SetStepStatusPass("Navigated to Yolo Group home page: https://yolo.group/" );
+            ExtentTestManager.SetStepStatusPass("Navigated to Yolo Group home page: https://yolo.group/");
         }
 
         public bool IsLogoDisplayed() => logo.Displayed;
