@@ -1,24 +1,23 @@
 ﻿using InterviewExcercise.ApiClient.Requests;
 using RestSharp;
+using System.Threading.Tasks;
 
 namespace InterviewExcercise.ApiClient.Endpoints
 {
     public class CommentEndpoint
     {
-        private RestClient client;
-
-        public CommentEndpoint(RestClient restClient)
+        public static async Task<IRestResponse> PostComment(PostCommentRequest requestBody, int postId)
         {
-            client = restClient;
-        }
-
-        public IRestResponse PostComment(PostCommentRequest requestBody, int postId)
-        {
-
-            var request = new RestRequest($"/public/v1/posts/{postId}/comments");
-            request.JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer();
+            var request = new RestRequest($"/public/v1/posts/{postId}/comments")
+            {
+                Method = Method.POST,
+                JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer(),
+            };
             request.AddJsonBody(requestBody);
-            return client.Post(request);
+
+            Task<IRestResponse> t = RestClientFixture.Instance.ExecuteAsync(request);
+            t.Wait();
+            return await t;
         }
     }
 }

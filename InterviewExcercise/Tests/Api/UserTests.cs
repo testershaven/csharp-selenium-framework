@@ -11,14 +11,6 @@ namespace InterviewExcercise
     [Parallelizable(scope: ParallelScope.All)]
     public class UserTests
     {
-        private RestClientFixture restClient;
-
-        [OneTimeSetUp]
-        public void SetUpReporter()
-        {
-            restClient = new RestClientFixture();
-        }
-
         [OneTimeTearDown]
         public void CloseAll()
         {
@@ -42,8 +34,8 @@ namespace InterviewExcercise
         {
             var postUserRequest = GeneratePostUserRequest();
 
-            var userCreationResponse = restClient.UserEndpoint
-                                            .PostUser(postUserRequest);
+            var userCreationResponse = UserEndpoint
+                                            .PostUser(postUserRequest).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + userCreationResponse.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + userCreationResponse.Content);
@@ -55,13 +47,13 @@ namespace InterviewExcercise
         {
             var firstUser = GeneratePostUserRequest();
 
-            restClient.UserEndpoint.PostUser(firstUser);
+            UserEndpoint.PostUser(firstUser).Wait();
 
             var secondUser = GeneratePostUserRequest();
             secondUser.Email = firstUser.Email;
 
-            var secondUserResponse = restClient.UserEndpoint
-                                        .PostUser(secondUser);
+            var secondUserResponse = UserEndpoint
+                                        .PostUser(secondUser).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + secondUserResponse.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + secondUserResponse.Content);
@@ -78,8 +70,8 @@ namespace InterviewExcercise
             var postUserRequest = GeneratePostUserRequest();
             postUserRequest.Name = null;
 
-            var response = restClient.UserEndpoint
-                                            .PostUser(postUserRequest);
+            var response = UserEndpoint
+                                            .PostUser(postUserRequest).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
@@ -96,8 +88,8 @@ namespace InterviewExcercise
             var postUserRequest = GeneratePostUserRequest();
             postUserRequest.Email = null;
 
-            var response = restClient.UserEndpoint
-                                            .PostUser(postUserRequest);
+            var response = UserEndpoint
+                                            .PostUser(postUserRequest).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
@@ -113,8 +105,7 @@ namespace InterviewExcercise
             var postUserRequest = GeneratePostUserRequest();
             postUserRequest.Gender = null;
 
-            var response = restClient.UserEndpoint
-                                            .PostUser(postUserRequest);
+            var response = UserEndpoint.PostUser(postUserRequest).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
@@ -130,8 +121,7 @@ namespace InterviewExcercise
             var postUserRequest = GeneratePostUserRequest();
             postUserRequest.Status = null;
 
-            var response = restClient.UserEndpoint
-                                            .PostUser(postUserRequest);
+            var response = UserEndpoint.PostUser(postUserRequest).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
@@ -147,8 +137,7 @@ namespace InterviewExcercise
             var postUserRequest = GeneratePostUserRequest();
             postUserRequest.Email = "@yoloGroup.com";
 
-            var response = restClient.UserEndpoint
-                                            .PostUser(postUserRequest);
+            var response = UserEndpoint.PostUser(postUserRequest).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
@@ -164,8 +153,7 @@ namespace InterviewExcercise
             var postUserRequest = GeneratePostUserRequest();
             postUserRequest.Email = "pepito@.com";
 
-            var response = restClient.UserEndpoint
-                                            .PostUser(postUserRequest);
+            var response = UserEndpoint.PostUser(postUserRequest).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
@@ -181,8 +169,7 @@ namespace InterviewExcercise
             var postUserRequest = GeneratePostUserRequest();
             postUserRequest.Email = "pepitoyologroup.com";
 
-            var response = restClient.UserEndpoint
-                                            .PostUser(postUserRequest);
+            var response = UserEndpoint.PostUser(postUserRequest).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
@@ -192,7 +179,7 @@ namespace InterviewExcercise
                     .Should().Contain("{\"field\":\"email\",\"message\":\"is invalid\"}");
         }
 
-        public PostUserRequest GeneratePostUserRequest()
+        public static PostUserRequest GeneratePostUserRequest()
         {
             ExtentTestManager.SetStepStatusPass("Generating Post User Request");
             var randomGenerator = new Random();

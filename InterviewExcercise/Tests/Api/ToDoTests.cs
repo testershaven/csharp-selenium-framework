@@ -13,16 +13,8 @@ namespace InterviewExcercise
     [Parallelizable(scope: ParallelScope.All)]
     public class ToDoTests
     {
-        private RestClientFixture restClient;
-
         private static UserData toDoUser;
 
-        [OneTimeSetUp]
-        public void SetUpReporter()
-        {
-            restClient = new RestClientFixture();
-
-        }
         [OneTimeTearDown]
         public void CloseAll()
         {
@@ -39,7 +31,7 @@ namespace InterviewExcercise
         public void Setup()
         {
             ExtentTestManager.CreateMethod(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
-            if (toDoUser == null) getRandomUser();
+            if (toDoUser == null) GetRandomUser();
         }
 
 
@@ -54,7 +46,7 @@ namespace InterviewExcercise
                 Status = "pending"
             };
 
-            var postResponse = restClient.ToDoEndpoint.PostToDo(request, toDoUser.id);
+            var postResponse = ToDoEndpoint.PostToDo(request, toDoUser.id).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
@@ -77,7 +69,7 @@ namespace InterviewExcercise
                 Status = "pending"
             };
 
-            var postResponse = restClient.ToDoEndpoint.PostToDo(request, toDoUser.id);
+            var postResponse = ToDoEndpoint.PostToDo(request, toDoUser.id).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
@@ -97,7 +89,7 @@ namespace InterviewExcercise
                 Status = null
             };
 
-            var postResponse = restClient.ToDoEndpoint.PostToDo(request, toDoUser.id);
+            var postResponse = ToDoEndpoint.PostToDo(request, toDoUser.id).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
@@ -117,7 +109,7 @@ namespace InterviewExcercise
                 Status = "pending"
             };
 
-            var postResponse = restClient.ToDoEndpoint.PostToDo(request, -1);
+            var postResponse = ToDoEndpoint.PostToDo(request, -1).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
@@ -126,10 +118,10 @@ namespace InterviewExcercise
             postResponse.Content.Should().Contain("{\"field\":\"user\",\"message\":\"must exist\"}");
         }
 
-        private void getRandomUser()
+        private static void GetRandomUser()
         {
             ExtentTestManager.SetStepStatusPass("Picking a random User");
-            var response = restClient.UserEndpoint.GetActiveUsers();
+            var response = UserEndpoint.GetActiveUsers().Result;
             var users = JsonSerializer.Deserialize<GetUsersResponse>(response.Content);
             toDoUser = users.data.Take(1).First();
         }

@@ -13,15 +13,7 @@ namespace InterviewExcercise
     [Parallelizable(scope: ParallelScope.All)]
     public class PostTests
     {
-        private RestClientFixture restClient;
-
         private static UserData postUser;
-
-        [OneTimeSetUp]
-        public void SetUpReporter()
-        {
-            restClient = new RestClientFixture();
-        }
 
         [OneTimeTearDown]
         public void CloseAll()
@@ -39,7 +31,7 @@ namespace InterviewExcercise
         public void Setup()
         {
             ExtentTestManager.CreateMethod(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
-            if (postUser == null) getRandomUser();
+            if (postUser == null) GetRandomUser();
         }
 
         [Test]
@@ -52,7 +44,7 @@ namespace InterviewExcercise
                 Body = "This is a test body"
             };
 
-            var postResponse = restClient.PostEndpoint.CreatePost(request, postUser.id);
+            var postResponse = PostEndpoint.CreatePost(request, postUser.id).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
@@ -73,7 +65,7 @@ namespace InterviewExcercise
                 Body = "This is a test body"
             };
 
-            var postResponse = restClient.PostEndpoint.CreatePost(request, postUser.id);
+            var postResponse = PostEndpoint.CreatePost(request, postUser.id).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
@@ -92,7 +84,7 @@ namespace InterviewExcercise
                 Body = null
             };
 
-            var postResponse = restClient.PostEndpoint.CreatePost(request, postUser.id);
+            var postResponse = PostEndpoint.CreatePost(request, postUser.id).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
@@ -111,7 +103,7 @@ namespace InterviewExcercise
                 Body = "This is a test body"
             };
 
-            var postResponse = restClient.PostEndpoint.CreatePost(request, -1);
+            var postResponse = PostEndpoint.CreatePost(request, -1).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
@@ -120,10 +112,10 @@ namespace InterviewExcercise
             postResponse.Content.Should().Contain("{\"field\":\"user\",\"message\":\"must exist\"}");
         }
 
-        private void getRandomUser()
+        private static void GetRandomUser()
         {
             ExtentTestManager.SetStepStatusPass("Picking a random user");
-            var response = restClient.UserEndpoint.GetActiveUsers();
+            var response = UserEndpoint.GetActiveUsers().Result;
             var users = JsonSerializer.Deserialize<GetUsersResponse>(response.Content);
             postUser = users.data.Take(1).First();
         }

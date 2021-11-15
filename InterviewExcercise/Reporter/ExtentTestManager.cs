@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace InterviewExcercise.Reporter
@@ -10,11 +9,9 @@ namespace InterviewExcercise.Reporter
     public class ExtentTestManager
     {
 
-        private static Dictionary<string, ExtentTest> _parentTestMap = new Dictionary<string, ExtentTest>();
-        private static ThreadLocal<ExtentTest> _parentTest = new ThreadLocal<ExtentTest>();
-        private static ThreadLocal<ExtentTest> _childTest = new ThreadLocal<ExtentTest>();
+        private static ThreadLocal<ExtentTest> _childTest = new();
 
-        private static readonly object _synclock = new object();
+        private static readonly object _synclock = new();
 
         public static ExtentTest CreateMethod(string parentName, string testName, string description = null)
         {
@@ -51,23 +48,15 @@ namespace InterviewExcercise.Reporter
                 var stacktrace = string.IsNullOrEmpty(TestContext.CurrentContext.Result.StackTrace)
                         ? ""
                         : string.Format("<pre>{0}</pre>", TestContext.CurrentContext.Result.StackTrace);
-                Status logstatus;
 
-                switch (status)
+                var logstatus = status switch
                 {
-                    case TestStatus.Failed:
-                        logstatus = Status.Fail;
-                        break;
-                    case TestStatus.Inconclusive:
-                        logstatus = Status.Warning;
-                        break;
-                    case TestStatus.Skipped:
-                        logstatus = Status.Skip;
-                        break;
-                    default:
-                        logstatus = Status.Pass;
-                        break;
-                }
+                    TestStatus.Failed => Status.Fail,
+                    TestStatus.Inconclusive => Status.Warning,
+                    TestStatus.Skipped => Status.Skip,
+                    _ => Status.Pass,
+                };
+
                 GetMethod().Log(logstatus, "Test ended with " + logstatus + stacktrace);
             }
         }
