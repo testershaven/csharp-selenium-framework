@@ -12,7 +12,7 @@ namespace InterviewExcercise.Tests
         [SetUp]
         public void Setup()
         {
-            ExtentTestManager.CreateMethod(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
+            ExtentTestManager.CreateTest(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
         }
 
         [OneTimeTearDown]

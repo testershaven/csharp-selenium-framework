@@ -30,7 +30,7 @@ namespace InterviewExcercise
         [SetUp]
         public void Setup()
         {
-            ExtentTestManager.CreateMethod(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
+            ExtentTestManager.CreateTest(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
             if (toDoUser == null) GetRandomUser();
         }
 

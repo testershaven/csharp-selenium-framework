@@ -13,7 +13,7 @@ namespace InterviewExcercise.Reporter
 
         private static readonly object _synclock = new();
 
-        public static ExtentTest CreateMethod(string parentName, string testName, string description = null)
+        public static ExtentTest CreateTest(string parentName, string testName, string description = null)
         {
             lock (_synclock)
             {
@@ -23,7 +23,7 @@ namespace InterviewExcercise.Reporter
                 return _childTest.Value;
             }
         }
-        public static ExtentTest GetMethod()
+        public static ExtentTest GetTest()
         {
             lock (_synclock)
             {
@@ -57,7 +57,7 @@ namespace InterviewExcercise.Reporter
                     _ => Status.Pass,
                 };
 
-                GetMethod().Log(logstatus, "Test ended with " + logstatus + stacktrace);
+                GetTest().Log(logstatus, "Test ended with " + logstatus + stacktrace);
             }
         }
     }
