@@ -8,7 +8,7 @@ using System.Net;
 
 namespace InterviewExcercise
 {
-    [Category("Api-UserTests")]
+    [Parallelizable(scope: ParallelScope.All)]
     public class UserTests
     {
         private RestClientFixture restClient;
@@ -17,8 +17,6 @@ namespace InterviewExcercise
         public void SetUpReporter()
         {
             restClient = new RestClientFixture();
-            ExtentTestManager.CreateParentTest(TestContext.CurrentContext.Test.ClassName);
-
         }
 
         [OneTimeTearDown]
@@ -30,7 +28,7 @@ namespace InterviewExcercise
         [SetUp]
         public void Setup()
         {
-            ExtentTestManager.CreateTest(TestContext.CurrentContext.Test.Name);
+            ExtentTestManager.CreateMethod(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
         }
 
         [TearDown]

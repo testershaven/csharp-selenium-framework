@@ -5,19 +5,14 @@ using OpenQA.Selenium.Chrome;
 
 namespace InterviewExcercise.Tests
 {
+    [Parallelizable(scope: ParallelScope.All)]
     public class HomePageTests
     {
-
-        [OneTimeSetUp]
-        public void SetUpReporter()
-        {
-            ExtentTestManager.CreateParentTest(TestContext.CurrentContext.Test.ClassName);
-        }
 
         [SetUp]
         public void Setup()
         {
-            ExtentTestManager.CreateTest(TestContext.CurrentContext.Test.Name, TestContext.CurrentContext.Test.ClassName);
+            ExtentTestManager.CreateMethod(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
         }
 
         [OneTimeTearDown]

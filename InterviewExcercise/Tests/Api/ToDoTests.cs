@@ -10,6 +10,7 @@ using System.Text.Json;
 
 namespace InterviewExcercise
 {
+    [Parallelizable(scope: ParallelScope.All)]
     public class ToDoTests
     {
         private RestClientFixture restClient;
@@ -19,7 +20,6 @@ namespace InterviewExcercise
         [OneTimeSetUp]
         public void SetUpReporter()
         {
-            ExtentTestManager.CreateParentTest(TestContext.CurrentContext.Test.ClassName);
             restClient = new RestClientFixture();
 
         }
@@ -38,7 +38,7 @@ namespace InterviewExcercise
         [SetUp]
         public void Setup()
         {
-            ExtentTestManager.CreateTest(TestContext.CurrentContext.Test.Name);
+            ExtentTestManager.CreateMethod(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
             if (toDoUser == null) getRandomUser();
         }
 
