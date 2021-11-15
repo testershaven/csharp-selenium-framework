@@ -8,7 +8,7 @@ namespace InterviewExcercise.Reporter
     public class ExtentManager
     {
         private static readonly Lazy<ExtentReports> _lazy =
-         new Lazy<ExtentReports>(() => new ExtentReports());
+         new(() => new ExtentReports());
 
         public static ExtentReports Instance { get { return _lazy.Value; } }
 
@@ -23,7 +23,6 @@ namespace InterviewExcercise.Reporter
             Instance.AddSystemInfo("Environment", "QA");
             Instance.AddSystemInfo("Machine", Environment.MachineName);
             Instance.AddSystemInfo("OS", Environment.OSVersion.VersionString);
-
         }
 
         private ExtentManager()

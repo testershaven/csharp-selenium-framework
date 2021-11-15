@@ -13,15 +13,8 @@ namespace InterviewExcercise
     [Parallelizable(scope: ParallelScope.All)]
     public class CommentTests
     {
-        private RestClientFixture restClient;
         private UserData commentUser;
         private PostData post;
-
-        [OneTimeSetUp]
-        public void SetUpReporter()
-        {
-            restClient = new RestClientFixture();
-        }
 
         [OneTimeTearDown]
         public void CloseAll()
@@ -39,8 +32,8 @@ namespace InterviewExcercise
         public void Setup()
         {
             ExtentTestManager.CreateMethod(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
-            if (commentUser == null) getRandomUser();
-            if (post == null) getRandomPost();
+            if (commentUser == null) GetRandomUser();
+            if (post == null) GetRandomPost();
         }
 
         [Test]
@@ -53,7 +46,7 @@ namespace InterviewExcercise
                 Body = "This is a test body"
             };
 
-            var postResponse = restClient.CommentEndpoint.PostComment(request, post.id);
+            var postResponse = CommentEndpoint.PostComment(request, post.id).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
@@ -74,7 +67,7 @@ namespace InterviewExcercise
                 Body = "This is a test body"
             };
 
-            var postResponse = restClient.CommentEndpoint.PostComment(request, post.id);
+            var postResponse = CommentEndpoint.PostComment(request, post.id).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
@@ -94,7 +87,7 @@ namespace InterviewExcercise
                 Body = "This is a test body"
             };
 
-            var postResponse = restClient.CommentEndpoint.PostComment(request, post.id);
+            var postResponse = CommentEndpoint.PostComment(request, post.id).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
@@ -113,7 +106,7 @@ namespace InterviewExcercise
                 Body = null
             };
 
-            var postResponse = restClient.CommentEndpoint.PostComment(request, post.id);
+            var postResponse = CommentEndpoint.PostComment(request, post.id).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
@@ -132,7 +125,7 @@ namespace InterviewExcercise
                 Body = "This is a test body"
             };
 
-            var postResponse = restClient.CommentEndpoint.PostComment(request, -1);
+            var postResponse = CommentEndpoint.PostComment(request, -1).Result;
 
             ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
             ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
@@ -141,19 +134,19 @@ namespace InterviewExcercise
             postResponse.Content.Should().Contain("{\"field\":\"post\",\"message\":\"must exist\"}");
         }
 
-        private void getRandomUser()
+        private void GetRandomUser()
         {
             ExtentTestManager.SetStepStatusPass("Picking a random user");
-            var response = restClient.UserEndpoint.GetActiveUsers();
+            var response = UserEndpoint.GetActiveUsers().Result;
             var users = JsonSerializer.Deserialize<GetUsersResponse>(response.Content);
             commentUser = users.data.Take(1).First();
         }
 
-        private void getRandomPost()
+        private void GetRandomPost()
         {
             ExtentTestManager.SetStepStatusPass("Picking a random post");
-            var response = restClient.PostEndpoint.GetPosts();
-            var users = JsonSerializer.Deserialize<GetPostsResponse>(response.Content);
+            var response = PostEndpoint.GetPosts();
+            var users = JsonSerializer.Deserialize<GetPostsResponse>(response.Result.Content);
             post = users.data.Take(1).First();
         }
     }

@@ -1,34 +1,40 @@
 ﻿using InterviewExcercise.ApiClient.Requests;
 using InterviewExcercise.Reporter;
 using RestSharp;
+using System.Threading.Tasks;
 
 namespace InterviewExcercise.ApiClient.Endpoints
 {
     public class UserEndpoint
     {
-        private RestClient client;
-
-        public UserEndpoint(RestClient restClient)
-        {
-            client = restClient;
-        }
-
-        public IRestResponse PostUser(PostUserRequest requestBody)
+        public static async Task<IRestResponse> PostUser(PostUserRequest requestBody)
         {
             ExtentTestManager.SetStepStatusPass("Posting User");
-            var request = new RestRequest("/public/v1/users");
-            request.JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer();
+            var request = new RestRequest("/public/v1/users")
+            {
+                Method = Method.POST,
+                JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer()
+            };
             request.AddJsonBody(requestBody);
-            return client.Post(request);
+
+            Task<IRestResponse> t = RestClientFixture.Instance.ExecuteAsync(request);
+            t.Wait();
+            return await t;
         }
 
         //Not Implementing Pagination as out of scope
-        public IRestResponse GetActiveUsers()
+        public static async Task<IRestResponse> GetActiveUsers()
         {
             ExtentTestManager.SetStepStatusPass("Getting active users");
-            var request = new RestRequest("/public/v1/users?status=active");
-            request.JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer();
-            return client.Get(request);
+            var request = new RestRequest("/public/v1/users?status=active")
+            {
+                Method = Method.GET,
+                JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer()
+            };
+
+            Task<IRestResponse> t = RestClientFixture.Instance.ExecuteAsync(request);
+            t.Wait();
+            return await t;
         }
     }
 }
