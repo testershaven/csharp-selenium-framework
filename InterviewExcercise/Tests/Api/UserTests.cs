@@ -14,19 +14,19 @@ namespace InterviewExcercise
         [OneTimeTearDown]
         public void CloseAll()
         {
-            ExtentManager.Instance.Flush();
+            ExtentManager.Reporter.Flush();
         }
 
         [SetUp]
         public void Setup()
         {
-            ExtentTestManager.CreateTest(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
+            ReportManager.CreateTest(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
         }
 
         [TearDown]
         public void AfterTest()
         {
-            ExtentTestManager.EndTest();
+            ReportManager.EndTest();
         }
 
         [Test]
@@ -37,8 +37,8 @@ namespace InterviewExcercise
             var userCreationResponse = UserEndpoint
                                             .PostUser(postUserRequest).Result;
 
-            ExtentTestManager.SetStepStatusPass("Response Code is: " + userCreationResponse.StatusCode);
-            ExtentTestManager.SetStepStatusPass("Response Content is: " + userCreationResponse.Content);
+            ReportManager.SetStepStatusPass("Response Code is: " + userCreationResponse.StatusCode);
+            ReportManager.SetStepStatusPass("Response Content is: " + userCreationResponse.Content);
             userCreationResponse.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
@@ -55,8 +55,8 @@ namespace InterviewExcercise
             var secondUserResponse = UserEndpoint
                                         .PostUser(secondUser).Result;
 
-            ExtentTestManager.SetStepStatusPass("Response Code is: " + secondUserResponse.StatusCode);
-            ExtentTestManager.SetStepStatusPass("Response Content is: " + secondUserResponse.Content);
+            ReportManager.SetStepStatusPass("Response Code is: " + secondUserResponse.StatusCode);
+            ReportManager.SetStepStatusPass("Response Content is: " + secondUserResponse.Content);
 
             secondUserResponse.StatusCode
                 .Should().Be(HttpStatusCode.UnprocessableEntity);
@@ -73,8 +73,8 @@ namespace InterviewExcercise
             var response = UserEndpoint
                                             .PostUser(postUserRequest).Result;
 
-            ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
-            ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
+            ReportManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ReportManager.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -91,8 +91,8 @@ namespace InterviewExcercise
             var response = UserEndpoint
                                             .PostUser(postUserRequest).Result;
 
-            ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
-            ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
+            ReportManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ReportManager.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -107,8 +107,8 @@ namespace InterviewExcercise
 
             var response = UserEndpoint.PostUser(postUserRequest).Result;
 
-            ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
-            ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
+            ReportManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ReportManager.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -123,8 +123,8 @@ namespace InterviewExcercise
 
             var response = UserEndpoint.PostUser(postUserRequest).Result;
 
-            ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
-            ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
+            ReportManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ReportManager.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -139,8 +139,8 @@ namespace InterviewExcercise
 
             var response = UserEndpoint.PostUser(postUserRequest).Result;
 
-            ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
-            ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
+            ReportManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ReportManager.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -155,8 +155,8 @@ namespace InterviewExcercise
 
             var response = UserEndpoint.PostUser(postUserRequest).Result;
 
-            ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
-            ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
+            ReportManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ReportManager.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -171,8 +171,8 @@ namespace InterviewExcercise
 
             var response = UserEndpoint.PostUser(postUserRequest).Result;
 
-            ExtentTestManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
-            ExtentTestManager.SetStepStatusPass("Response Content is: " + response.Content);
+            ReportManager.SetStepStatusPass("Response Code is: " + response.StatusCode);
+            ReportManager.SetStepStatusPass("Response Content is: " + response.Content);
 
             response.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             response.Content
@@ -181,7 +181,7 @@ namespace InterviewExcercise
 
         public static PostUserRequest GeneratePostUserRequest()
         {
-            ExtentTestManager.SetStepStatusPass("Generating Post User Request");
+            ReportManager.SetStepStatusPass("Generating Post User Request");
             var randomGenerator = new Random();
 
             return new PostUserRequest()

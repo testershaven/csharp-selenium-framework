@@ -18,11 +18,11 @@ namespace InterviewExcercise.UiClient.Pages
 
         public void Load()
         {
-            Driver.Navigate().GoToUrl(ConfigFixture.Instance["UiClient:HomePage"]);
+            Driver.Navigate().GoToUrl(ConfigManager.AppSettings["UiClient:HomePage"]);
             WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
 
             wait.Until(condition => logo.Displayed);
-            ExtentTestManager.SetStepStatusPass("Navigated to Yolo Group home page: https://yolo.group/");
+            ReportManager.SetStepStatusPass("Navigated to Yolo Group home page: https://yolo.group/");
         }
 
         public bool IsLogoDisplayed() => logo.Displayed;

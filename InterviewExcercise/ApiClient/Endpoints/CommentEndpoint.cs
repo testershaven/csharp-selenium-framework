@@ -15,7 +15,7 @@ namespace InterviewExcercise.ApiClient.Endpoints
             };
             request.AddJsonBody(requestBody);
 
-            Task<IRestResponse> t = RestClientFixture.Instance.ExecuteAsync(request);
+            Task<IRestResponse> t = ApiClientManager.ApiClient.ExecuteAsync(request);
             t.Wait();
             return await t;
         }

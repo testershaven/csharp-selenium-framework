@@ -9,7 +9,7 @@ namespace InterviewExcercise.ApiClient.Endpoints
     {
         public static async Task<IRestResponse> PostToDo(PostToDoRequest requestBody, int userId)
         {
-            ExtentTestManager.SetStepStatusPass("Posting To Do");
+            ReportManager.SetStepStatusPass("Posting To Do");
             var request = new RestRequest($"/public/v1/users/{userId}/todos")
             {
                 JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer()
@@ -17,7 +17,7 @@ namespace InterviewExcercise.ApiClient.Endpoints
             request.AddJsonBody(requestBody);
             request.Method = Method.POST;
 
-            Task<IRestResponse> t = RestClientFixture.Instance.ExecuteAsync(request);
+            Task<IRestResponse> t = ApiClientManager.ApiClient.ExecuteAsync(request);
             t.Wait();
             return await t;
         }

@@ -10,7 +10,7 @@ namespace InterviewExcercise.UiClient
 
         public static IWebDriver StartDriver()
         {
-            string browserType = ConfigFixture.Instance["UiClient:Browser"];
+            string browserType = ConfigManager.AppSettings["UiClient:Browser"];
 
             browser.Value = browserType switch
             {

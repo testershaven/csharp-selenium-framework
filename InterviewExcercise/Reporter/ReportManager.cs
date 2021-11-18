@@ -6,9 +6,8 @@ using System.Threading;
 
 namespace InterviewExcercise.Reporter
 {
-    public class ExtentTestManager
+    public class ReportManager
     {
-
         private static ThreadLocal<ExtentTest> _childTest = new();
 
         private static readonly object _synclock = new();
@@ -17,7 +16,7 @@ namespace InterviewExcercise.Reporter
         {
             lock (_synclock)
             {
-                _childTest.Value = ExtentManager.Instance.CreateTest(testName, description);
+                _childTest.Value = ExtentManager.Reporter.CreateTest(testName, description);
                 _childTest.Value.AssignCategory(parentName);
 
                 return _childTest.Value;

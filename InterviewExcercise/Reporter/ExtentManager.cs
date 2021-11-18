@@ -10,7 +10,7 @@ namespace InterviewExcercise.Reporter
         private static readonly Lazy<ExtentReports> _lazy =
          new(() => new ExtentReports());
 
-        public static ExtentReports Instance { get { return _lazy.Value; } }
+        public static ExtentReports Reporter { get { return _lazy.Value; } }
 
         static ExtentManager()
         {
@@ -18,11 +18,11 @@ namespace InterviewExcercise.Reporter
             htmlReporter.Config.DocumentTitle = "Automation Testing Report";
             htmlReporter.Config.ReportName = "Regression Testing";
             htmlReporter.Config.Theme = AventStack.ExtentReports.Reporter.Configuration.Theme.Standard;
-            Instance.AttachReporter(htmlReporter);
-            Instance.AddSystemInfo("Application Under Test", "nop Commerce Demo");
-            Instance.AddSystemInfo("Environment", "QA");
-            Instance.AddSystemInfo("Machine", Environment.MachineName);
-            Instance.AddSystemInfo("OS", Environment.OSVersion.VersionString);
+            Reporter.AttachReporter(htmlReporter);
+            Reporter.AddSystemInfo("Application Under Test", "nop Commerce Demo");
+            Reporter.AddSystemInfo("Environment", "QA");
+            Reporter.AddSystemInfo("Machine", Environment.MachineName);
+            Reporter.AddSystemInfo("OS", Environment.OSVersion.VersionString);
         }
 
         private ExtentManager()

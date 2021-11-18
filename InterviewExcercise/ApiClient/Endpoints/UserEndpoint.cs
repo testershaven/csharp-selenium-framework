@@ -9,7 +9,7 @@ namespace InterviewExcercise.ApiClient.Endpoints
     {
         public static async Task<IRestResponse> PostUser(PostUserRequest requestBody)
         {
-            ExtentTestManager.SetStepStatusPass("Posting User");
+            ReportManager.SetStepStatusPass("Posting User");
             var request = new RestRequest("/public/v1/users")
             {
                 Method = Method.POST,
@@ -17,7 +17,7 @@ namespace InterviewExcercise.ApiClient.Endpoints
             };
             request.AddJsonBody(requestBody);
 
-            Task<IRestResponse> t = RestClientFixture.Instance.ExecuteAsync(request);
+            Task<IRestResponse> t = ApiClientManager.ApiClient.ExecuteAsync(request);
             t.Wait();
             return await t;
         }
@@ -25,14 +25,14 @@ namespace InterviewExcercise.ApiClient.Endpoints
         //Not Implementing Pagination as out of scope
         public static async Task<IRestResponse> GetActiveUsers()
         {
-            ExtentTestManager.SetStepStatusPass("Getting active users");
+            ReportManager.SetStepStatusPass("Getting active users");
             var request = new RestRequest("/public/v1/users?status=active")
             {
                 Method = Method.GET,
                 JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer()
             };
 
-            Task<IRestResponse> t = RestClientFixture.Instance.ExecuteAsync(request);
+            Task<IRestResponse> t = ApiClientManager.ApiClient.ExecuteAsync(request);
             t.Wait();
             return await t;
         }

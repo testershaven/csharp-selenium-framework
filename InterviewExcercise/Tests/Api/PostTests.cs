@@ -18,19 +18,19 @@ namespace InterviewExcercise
         [OneTimeTearDown]
         public void CloseAll()
         {
-            ExtentManager.Instance.Flush();
+            ExtentManager.Reporter.Flush();
         }
 
         [TearDown]
         public void AfterTest()
         {
-            ExtentTestManager.EndTest();
+            ReportManager.EndTest();
         }
 
         [SetUp]
         public void Setup()
         {
-            ExtentTestManager.CreateTest(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
+            ReportManager.CreateTest(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
             if (postUser == null) GetRandomUser();
         }
 
@@ -46,8 +46,8 @@ namespace InterviewExcercise
 
             var postResponse = PostEndpoint.CreatePost(request, postUser.id).Result;
 
-            ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
-            ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
+            ReportManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
+            ReportManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.Created);
             postResponse.Content.Should().Contain(request.Title);
@@ -67,8 +67,8 @@ namespace InterviewExcercise
 
             var postResponse = PostEndpoint.CreatePost(request, postUser.id).Result;
 
-            ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
-            ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
+            ReportManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
+            ReportManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"title\",\"message\":\"can't be blank\"}");
@@ -86,8 +86,8 @@ namespace InterviewExcercise
 
             var postResponse = PostEndpoint.CreatePost(request, postUser.id).Result;
 
-            ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
-            ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
+            ReportManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
+            ReportManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"body\",\"message\":\"can't be blank\"}");
@@ -105,8 +105,8 @@ namespace InterviewExcercise
 
             var postResponse = PostEndpoint.CreatePost(request, -1).Result;
 
-            ExtentTestManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
-            ExtentTestManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
+            ReportManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
+            ReportManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"user\",\"message\":\"must exist\"}");
@@ -114,7 +114,7 @@ namespace InterviewExcercise
 
         private static void GetRandomUser()
         {
-            ExtentTestManager.SetStepStatusPass("Picking a random user");
+            ReportManager.SetStepStatusPass("Picking a random user");
             var response = UserEndpoint.GetActiveUsers().Result;
             var users = JsonSerializer.Deserialize<GetUsersResponse>(response.Content);
             postUser = users.data.Take(1).First();

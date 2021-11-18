@@ -13,19 +13,19 @@ namespace InterviewExcercise.Tests
         [SetUp]
         public void Setup()
         {
-            ExtentTestManager.CreateTest(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
+            ReportManager.CreateTest(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
         }
 
         [OneTimeTearDown]
         public void CloseAll()
         {
-            ExtentManager.Instance.Flush();
+            ExtentManager.Reporter.Flush();
         }
 
         [TearDown]
         public void AfterTest()
         {
-            ExtentTestManager.EndTest();
+            ReportManager.EndTest();
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace InterviewExcercise.Tests
                 homePage.Load();
 
                 Assert.True(homePage.IsLogoDisplayed());
-                ExtentTestManager.SetStepStatusPass("Logo is correctly displayed");
+                ReportManager.SetStepStatusPass("Logo is correctly displayed");
             }
         }
         [Test]
@@ -49,7 +49,7 @@ namespace InterviewExcercise.Tests
                 homePage.Load();
 
                 Assert.True(homePage.IsLogoDisplayed());
-                ExtentTestManager.SetStepStatusPass("Logo is correctly displayed");
+                ReportManager.SetStepStatusPass("Logo is correctly displayed");
             }
         }
 
@@ -62,7 +62,7 @@ namespace InterviewExcercise.Tests
                 homePage.Load();
 
                 Assert.True(homePage.IsLogoDisplayed());
-                ExtentTestManager.SetStepStatusPass("Logo is correctly displayed");
+                ReportManager.SetStepStatusPass("Logo is correctly displayed");
             }
         }
     }
