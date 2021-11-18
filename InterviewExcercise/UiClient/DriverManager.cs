@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Remote;
 using System;
 using System.Threading;
@@ -17,7 +18,7 @@ namespace InterviewExcercise.UiClient
             browser.Value = browserType switch
             {
                 "Chrome" => new ChromeDriver(),
-                "Firefox" => throw new System.NotImplementedException(),
+                "Firefox" => new FirefoxDriver(),
                 "RemoteWebDriver" => new RemoteWebDriver(new Uri(ConfigManager.AppSettings["UiClient:RemoteUri"]), new ChromeOptions()),
                 _ => throw new System.NotImplementedException(),
             };

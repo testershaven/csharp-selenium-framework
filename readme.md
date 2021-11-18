@@ -17,14 +17,28 @@ With the tooling of your choice, create a test suite for this API to test at lea
 
 Net core project is divided in the followings
 
+	- docker
+		- config.toml -> has configuration for selenium nodes
+		- docker-compose.yml -> orchestrator for hub and nodes
 	- InterviewExcercise
 		- ApiClient -> Classes with RestClient with respective endpoints, requests and responses
 		- Tests -> Test classes separated by functionalities and respecting atomicity of tests
 		- Reporter -> Classes with Reporting and logging mechanisms
+		- UiClient -> Classes with SeleniumClient.
 
 ## How to execute it 
 
  1. Install Net core 5
- 2. execute ''dotnet test'' in console standing on folder where is .sln file
- 3. Html Report will be automatically created on the base folder under the ExtentReport.html name
- 4. If you want to print logs in console too run it with ''dotnet test --logger "console;verbosity=detailed"'' 
+ 2. Have Chrome installed
+ 3. Execute ''dotnet test'' in console standing on folder where is .sln file
+ 4. Html Report will be automatically created on the base folder under the ExtentReport.html name
+ 5. If you want to print logs in console too run it with ''dotnet test --logger "console;verbosity=detailed"''
+
+ ## How to execute selenium grid
+
+ 1. Install docker
+ 2. In terminal move to docker folder
+ 3. run 'docker compose up'
+ 4. Open appsettings.json
+ 5. Set browser parameter as 'RemoteWebDriver'
+ 6. Execute ''dotnet test'' in console standing on folder where is .sln file
