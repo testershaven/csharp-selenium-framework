@@ -1,4 +1,5 @@
 ﻿using InterviewExcercise.Reporter;
+using InterviewExcercise.UiClient;
 using InterviewExcercise.UiClient.Pages;
 using NUnit.Framework;
 using OpenQA.Selenium.Chrome;
@@ -30,7 +31,32 @@ namespace InterviewExcercise.Tests
         [Test]
         public void VerifyElementsInLandingPage()
         {
-            using (var driver = new ChromeDriver())
+            using (var driver = DriverManager.StartDriver())
+            {
+                var homePage = new HomePage(driver);
+                homePage.Load();
+
+                Assert.True(homePage.IsLogoDisplayed());
+                ExtentTestManager.SetStepStatusPass("Logo is correctly displayed");
+            }
+        }
+        [Test]
+        public void VerifyElementsInLandingPage2()
+        {
+            using (var driver = DriverManager.StartDriver())
+            {
+                var homePage = new HomePage(driver);
+                homePage.Load();
+
+                Assert.True(homePage.IsLogoDisplayed());
+                ExtentTestManager.SetStepStatusPass("Logo is correctly displayed");
+            }
+        }
+
+        [Test]
+        public void VerifyElementsInLandingPage3()
+        {
+            using (var driver = DriverManager.StartDriver())
             {
                 var homePage = new HomePage(driver);
                 homePage.Load();
