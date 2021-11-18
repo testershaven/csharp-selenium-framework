@@ -1,5 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Remote;
+using System;
 using System.Threading;
 
 namespace InterviewExcercise.UiClient
@@ -16,7 +18,7 @@ namespace InterviewExcercise.UiClient
             {
                 "Chrome" => new ChromeDriver(),
                 "Firefox" => throw new System.NotImplementedException(),
-                "SeleniumGrid" => throw new System.NotImplementedException(),
+                "RemoteWebDriver" => new RemoteWebDriver(new Uri(ConfigManager.AppSettings["UiClient:RemoteUri"]), new ChromeOptions()),
                 _ => throw new System.NotImplementedException(),
             };
 
