@@ -43,7 +43,7 @@ Net core project is divided in the followings
  5. Set isRemote parameter as 'true'
  6. Execute ''dotnet test'' in console standing on folder where is .sln file
 
-## Next Futures
+## Next Features
 
 	- Add Database Support
 	- ?
