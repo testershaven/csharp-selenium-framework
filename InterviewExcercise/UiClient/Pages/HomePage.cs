@@ -18,7 +18,7 @@ namespace InterviewExcercise.UiClient.Pages
 
         public void Load()
         {
-            Driver.Navigate().GoToUrl(ConfigManager.AppSettings["UiClient:HomePage"]);
+            Driver.Navigate().GoToUrl(ConfigManager.AppSettings["UiClient:Pages:HomePage"]);
             WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
 
             wait.Until(condition => logo.Displayed);

@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Remote;
 using System;
@@ -15,13 +16,25 @@ namespace InterviewExcercise.UiClient
         {
             string browserType = ConfigManager.AppSettings["UiClient:Browser"];
 
-            browser.Value = browserType switch
+            if (bool.Parse(ConfigManager.AppSettings["UiClient:IsRemote"]))
             {
-                "Chrome" => new ChromeDriver(),
-                "Firefox" => new FirefoxDriver(),
-                "RemoteWebDriver" => new RemoteWebDriver(new Uri(ConfigManager.AppSettings["UiClient:RemoteUri"]), new ChromeOptions()),
-                _ => throw new System.NotImplementedException(),
-            };
+                browser.Value = browserType switch
+                {
+                    "Chrome" => new RemoteWebDriver(new Uri(ConfigManager.AppSettings["UiClient:RemoteUri"]), new ChromeOptions()),
+                    "Firefox" => new RemoteWebDriver(new Uri(ConfigManager.AppSettings["UiClient:RemoteUri"]), new FirefoxOptions()),
+                    "Edge" => new RemoteWebDriver(new Uri(ConfigManager.AppSettings["UiClient:RemoteUri"]), new EdgeOptions()),
+                    _ => throw new System.NotImplementedException(),
+                };
+            } else
+            {
+                browser.Value = browserType switch
+                {
+                    "Chrome" => new ChromeDriver(),
+                    "Firefox" => new FirefoxDriver(),
+                    "Edge" => new EdgeDriver(),
+                    _ => throw new System.NotImplementedException(),
+                };
+            }
 
             return browser.Value;
         }
