@@ -9,7 +9,7 @@
 		- Dynamic Selenium grid
 		- Dockerized enviroment support
 	- Parallel execution support
-	- Custom Html Report highly cutomizable
+	- Html Report highly cutomizable
 
 ## Project structure
 
@@ -46,3 +46,4 @@ Net core project is divided in the followings
 ## Next Futures
 
 	- Add Database Support
+	- ?
