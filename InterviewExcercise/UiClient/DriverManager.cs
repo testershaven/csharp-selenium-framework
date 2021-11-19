@@ -15,8 +15,9 @@ namespace InterviewExcercise.UiClient
         public static IWebDriver StartDriver()
         {
             string browserType = ConfigManager.AppSettings["UiClient:Browser"];
+            bool isRemote = bool.Parse(ConfigManager.AppSettings["UiClient:IsRemote"]);
 
-            if (bool.Parse(ConfigManager.AppSettings["UiClient:IsRemote"]))
+            if (isRemote)
             {
                 browser.Value = browserType switch
                 {
