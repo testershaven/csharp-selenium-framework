@@ -40,5 +40,5 @@ Net core project is divided in the followings
  2. In terminal move to docker folder
  3. run 'docker compose up'
  4. Open appsettings.json
- 5. Set browser parameter as 'RemoteWebDriver'
+ 5. Set isRemote parameter as 'true'
  6. Execute ''dotnet test'' in console standing on folder where is .sln file
