@@ -8,6 +8,7 @@
 		- RemoteWebDriverSupported
 		- Dynamic Selenium grid
 		- Dockerized enviroment support
+	- DbClient to connect to Databases
 	- Parallel execution support
 	- Html Report highly cutomizable
 
@@ -23,6 +24,7 @@ Net core project is divided in the followings
 		- Tests -> Test classes separated by functionalities and respecting atomicity of tests
 		- Reporter -> Classes with Reporting and logging mechanisms
 		- UiClient -> Classes with SeleniumClient.
+		- DbClient -> Classes with EntityFramework for database connections
 
 ## How to execute it 
 
@@ -45,5 +47,4 @@ Net core project is divided in the followings
 
 ## Next Features
 
-	- Add Database Support
 	- ?
