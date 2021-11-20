@@ -2,7 +2,7 @@
 using RestSharp.Serialization.Json;
 using System;
 
-namespace InterviewExcercise.ApiClient.Endpoints
+namespace TestingFramework.ApiClient.Endpoints
 {
     public class ApiClientManager
     {

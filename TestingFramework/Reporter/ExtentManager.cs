@@ -3,7 +3,7 @@ using AventStack.ExtentReports.Reporter;
 using System;
 using System.IO;
 
-namespace InterviewExcercise.Reporter
+namespace TestingFramework.Reporter
 {
     public class ExtentManager
     {

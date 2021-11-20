@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InterviewExcercise.ApiClient.Responses
+namespace TestingFramework.ApiClient.Responses
 {
     public class GetUsersResponse
     {

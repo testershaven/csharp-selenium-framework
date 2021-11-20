@@ -1,12 +1,12 @@
 using FluentAssertions;
-using InterviewExcercise.ApiClient.Endpoints;
-using InterviewExcercise.ApiClient.Requests;
-using InterviewExcercise.Reporter;
+using TestingFramework.ApiClient.Endpoints;
+using TestingFramework.ApiClient.Requests;
+using TestingFramework.Reporter;
 using NUnit.Framework;
 using System;
 using System.Net;
 
-namespace InterviewExcercise
+namespace TestingFramework
 {
     [Parallelizable(scope: ParallelScope.All)]
     public class UserTests
