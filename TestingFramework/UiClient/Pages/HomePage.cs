@@ -1,9 +1,9 @@
-﻿using InterviewExcercise.Reporter;
+﻿using TestingFramework.Reporter;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 
-namespace InterviewExcercise.UiClient.Pages
+namespace TestingFramework.UiClient.Pages
 {
     class HomePage
     {

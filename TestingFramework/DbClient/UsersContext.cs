@@ -1,4 +1,4 @@
-﻿using InterviewExcercise;
+﻿using TestingFramework;
 using Microsoft.EntityFrameworkCore;
 
 namespace TestingFramework.DbClient

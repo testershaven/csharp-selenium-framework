@@ -1,8 +1,8 @@
-﻿using InterviewExcercise.ApiClient.Requests;
+﻿using TestingFramework.ApiClient.Requests;
 using RestSharp;
 using System.Threading.Tasks;
 
-namespace InterviewExcercise.ApiClient.Endpoints
+namespace TestingFramework.ApiClient.Endpoints
 {
     public class CommentEndpoint
     {

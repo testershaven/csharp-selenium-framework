@@ -1,4 +1,4 @@
-﻿namespace InterviewExcercise.ApiClient.Requests
+﻿namespace TestingFramework.ApiClient.Requests
 {
     public class PostToDoRequest
     {

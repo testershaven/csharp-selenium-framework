@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace InterviewExcercise
+namespace TestingFramework
 {
     public class ConfigManager
     {

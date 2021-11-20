@@ -1,9 +1,9 @@
-﻿using InterviewExcercise.ApiClient.Requests;
-using InterviewExcercise.Reporter;
+﻿using TestingFramework.ApiClient.Requests;
+using TestingFramework.Reporter;
 using RestSharp;
 using System.Threading.Tasks;
 
-namespace InterviewExcercise.ApiClient.Endpoints
+namespace TestingFramework.ApiClient.Endpoints
 {
     public class PostEndpoint
     {

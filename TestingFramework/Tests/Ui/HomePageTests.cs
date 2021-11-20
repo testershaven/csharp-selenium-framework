@@ -1,10 +1,10 @@
-﻿using InterviewExcercise.Reporter;
-using InterviewExcercise.UiClient;
-using InterviewExcercise.UiClient.Pages;
+﻿using TestingFramework.Reporter;
+using TestingFramework.UiClient;
+using TestingFramework.UiClient.Pages;
 using NUnit.Framework;
 using OpenQA.Selenium.Chrome;
 
-namespace InterviewExcercise.Tests
+namespace TestingFramework.Tests
 {
     [Parallelizable(scope: ParallelScope.All)]
     public class HomePageTests

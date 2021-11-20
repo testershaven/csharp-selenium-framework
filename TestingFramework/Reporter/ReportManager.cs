@@ -4,7 +4,7 @@ using NUnit.Framework.Interfaces;
 using System;
 using System.Threading;
 
-namespace InterviewExcercise.Reporter
+namespace TestingFramework.Reporter
 {
     public class ReportManager
     {

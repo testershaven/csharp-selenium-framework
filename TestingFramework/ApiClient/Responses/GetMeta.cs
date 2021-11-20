@@ -1,4 +1,4 @@
-﻿namespace InterviewExcercise.ApiClient.Responses
+﻿namespace TestingFramework.ApiClient.Responses
 {
     public class GetMeta
     {
