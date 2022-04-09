@@ -6,10 +6,16 @@ using NUnit.Framework;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
+using NUnit.Allure.Attributes;
+using NUnit.Allure.Core;
+using Allure.Commons;
 
 namespace TestingFramework
 {
     [Parallelizable(scope: ParallelScope.All)]
+    [AllureNUnit]
+    [AllureSuite("ToDo Tests")]
+    [AllureDisplayIgnored]
     public class ToDoTests
     {
         private static UserData toDoUser;
@@ -20,7 +26,9 @@ namespace TestingFramework
             if (toDoUser == null) GetRandomUser();
         }
 
-        [Test]
+        [Test(Description = "Post a To do on user")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureOwner("Saetabis")]
         public void CreateToDoOnUser()
         {
             var request = new PostToDoRequest()
@@ -40,7 +48,9 @@ namespace TestingFramework
             postResponse.Content.Should().Contain(request.due_on);
         }
 
-        [Test]
+        [Test(Description = "Post a To do without title")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureOwner("Saetabis")]
         public void PostToDoWithoudTitle()
         {
             var request = new PostToDoRequest()
@@ -56,8 +66,10 @@ namespace TestingFramework
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"title\",\"message\":\"can't be blank\"}");
         }
-
-        [Test]
+   
+        [Test(Description = "Post a To do without status")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureOwner("Saetabis")]
         public void PostToDoWithoutStatus()
         {
             var request = new PostToDoRequest()
@@ -74,7 +86,9 @@ namespace TestingFramework
             postResponse.Content.Should().Contain("{\"field\":\"status\",\"message\":\"can't be blank\"}");
         }
 
-        [Test]
+        [Test(Description = "Post a To do without User Id")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureOwner("Saetabis")]
         public void PostToDoWithoutUserId()
         {
             var request = new PostToDoRequest()
