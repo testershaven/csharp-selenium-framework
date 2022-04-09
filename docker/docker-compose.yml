@@ -22,3 +22,25 @@ services:
       - "4442:4442"
       - "4443:4443"
       - "4444:4444"
+
+  allure:
+    image: 'frankescobar/allure-docker-service'
+    environment:
+      CHECK_RESULTS_EVERY_SECONDS: NONE # NONE - recommended for multiple projects
+      KEEP_HISTORY: 1
+      KEEP_HISTORY_LATEST: 50
+      SECURITY_USER: 'automationUser'
+      SECURITY_PASS: '@utomati0n.us3r.951357'
+      SECURITY_ENABLED: 1
+    ports:
+      - '5050:5050'
+
+  allure-ui:
+    image: 'frankescobar/allure-docker-service-ui'
+    environment:
+      ALLURE_DOCKER_PUBLIC_API_URL: 'http://localhost:5050'
+      ALLURE_DOCKER_PUBLIC_API_URL_PREFIX: ''
+    ports:
+      - '5252:5252'
+    depends_on:
+      - allure

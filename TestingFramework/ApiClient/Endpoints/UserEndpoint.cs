@@ -7,32 +7,30 @@ namespace TestingFramework.ApiClient.Endpoints
 {
     public class UserEndpoint
     {
-        public static async Task<IRestResponse> PostUser(PostUserRequest requestBody)
+        public static async Task<RestResponse> PostUser(PostUserRequest requestBody)
         {
             ReportManager.SetStepStatusPass("Posting User");
             var request = new RestRequest("/public/v1/users")
             {
-                Method = Method.POST,
-                JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer()
+                Method = Method.Post,
             };
             request.AddJsonBody(requestBody);
 
-            Task<IRestResponse> t = ApiClientManager.ApiClient.ExecuteAsync(request);
+            Task<RestResponse> t = ApiClientManager.ApiClient.ExecuteAsync(request);
             t.Wait();
             return await t;
         }
 
         //Not Implementing Pagination as out of scope
-        public static async Task<IRestResponse> GetActiveUsers()
+        public static async Task<RestResponse> GetActiveUsers()
         {
             ReportManager.SetStepStatusPass("Getting active users");
             var request = new RestRequest("/public/v1/users?status=active")
             {
-                Method = Method.GET,
-                JsonSerializer = new RestSharp.Serializers.NewtonsoftJson.JsonNetSerializer()
+                Method = Method.Get,
             };
 
-            Task<IRestResponse> t = ApiClientManager.ApiClient.ExecuteAsync(request);
+            Task<RestResponse> t = ApiClientManager.ApiClient.ExecuteAsync(request);
             t.Wait();
             return await t;
         }

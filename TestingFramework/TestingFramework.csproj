@@ -10,26 +10,26 @@
     <PackageReference Include="DotNetSeleniumExtras.PageObjects.Core" Version="4.0.1" />
     <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
     <PackageReference Include="ExtentReports" Version="4.1.0" />
-    <PackageReference Include="FluentAssertions" Version="6.2.0" />
+    <PackageReference Include="FluentAssertions" Version="6.6.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.12" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
-    <PackageReference Include="NUnit" Version="3.13.2" />
-    <PackageReference Include="NUnit.ConsoleRunner" Version="3.12.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+    <PackageReference Include="NUnit" Version="3.13.3" />
+    <PackageReference Include="NUnit.ConsoleRunner" Version="3.15.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
     <PackageReference Include="NunitXml.TestLogger" Version="3.0.117" />
-    <PackageReference Include="RestSharp" Version="106.13.0" />
-    <PackageReference Include="RestSharp.Serializers.NewtonsoftJson" Version="106.13.0" />
-    <PackageReference Include="coverlet.collector" Version="3.1.0">
+    <PackageReference Include="RestSharp" Version="107.3.0" />
+    <PackageReference Include="RestSharp.Serializers.NewtonsoftJson" Version="107.3.0" />
+    <PackageReference Include="coverlet.collector" Version="3.1.2">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Selenium.Support" Version="4.0.1" />
-    <PackageReference Include="Selenium.WebDriver" Version="4.0.1" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="96.0.4664.4500" />
+    <PackageReference Include="Selenium.Support" Version="4.1.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.1.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="100.0.4896.6000" />
     <PackageReference Include="Selenium.WebDriver.GeckoDriver.Win64" Version="0.30.0.1" />
     <PackageReference Include="Selenium.WebDriver.MicrosoftDriver" Version="17.17134.0" />
-    <PackageReference Include="Selenium.WebDriver.MSEdgeDriver" Version="95.0.1020.30" />
+    <PackageReference Include="Selenium.WebDriver.MSEdgeDriver" Version="100.0.1185.36" />
   </ItemGroup>
 
   <ItemGroup>
