@@ -1,5 +1,4 @@
-﻿using TestingFramework.Reporter;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 
@@ -22,7 +21,6 @@ namespace TestingFramework.UiClient.Pages
             WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
 
             wait.Until(condition => logo.Displayed);
-            ReportManager.SetStepStatusPass("Navigated to Yolo Group home page: https://yolo.group/");
         }
 
         public bool IsLogoDisplayed() => logo.Displayed;

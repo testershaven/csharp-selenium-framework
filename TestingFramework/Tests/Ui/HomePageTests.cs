@@ -1,32 +1,12 @@
-﻿using TestingFramework.Reporter;
-using TestingFramework.UiClient;
+﻿using TestingFramework.UiClient;
 using TestingFramework.UiClient.Pages;
 using NUnit.Framework;
-using OpenQA.Selenium.Chrome;
 
 namespace TestingFramework.Tests
 {
     [Parallelizable(scope: ParallelScope.All)]
     public class HomePageTests
     {
-
-        [SetUp]
-        public void Setup()
-        {
-            ReportManager.CreateTest(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
-        }
-
-        [OneTimeTearDown]
-        public void CloseAll()
-        {
-            ExtentManager.Reporter.Flush();
-        }
-
-        [TearDown]
-        public void AfterTest()
-        {
-            ReportManager.EndTest();
-        }
 
         [Test]
         public void VerifyElementsInLandingPage()
@@ -37,7 +17,6 @@ namespace TestingFramework.Tests
                 homePage.Load();
 
                 Assert.True(homePage.IsLogoDisplayed());
-                ReportManager.SetStepStatusPass("Logo is correctly displayed");
             }
         }
         [Test]
@@ -49,7 +28,6 @@ namespace TestingFramework.Tests
                 homePage.Load();
 
                 Assert.True(homePage.IsLogoDisplayed());
-                ReportManager.SetStepStatusPass("Logo is correctly displayed");
             }
         }
 
@@ -62,7 +40,6 @@ namespace TestingFramework.Tests
                 homePage.Load();
 
                 Assert.True(homePage.IsLogoDisplayed());
-                ReportManager.SetStepStatusPass("Logo is correctly displayed");
             }
         }
     }
