@@ -18,6 +18,9 @@ jobs:
             Get-PackageSource
             choco install googlechrome
       - run:
+          name: "Move to tests folder"
+          command: cd project
+      - run:
           name: "Run Application Tests"
           command: dotnet test
 
