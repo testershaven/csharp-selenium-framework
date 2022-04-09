@@ -1,7 +1,8 @@
 ﻿using TestingFramework.ApiClient.Requests;
-using TestingFramework.Reporter;
 using RestSharp;
 using System.Threading.Tasks;
+using Allure.Commons;
+using NUnit.Allure.Core;
 
 namespace TestingFramework.ApiClient.Endpoints
 {
@@ -9,13 +10,17 @@ namespace TestingFramework.ApiClient.Endpoints
     {
         public static async Task<RestResponse> PostToDo(PostToDoRequest requestBody, int userId)
         {
-            ReportManager.SetStepStatusPass("Posting To Do");
-            var request = new RestRequest($"/public/v1/users/{userId}/todos");
-            request.AddJsonBody(requestBody);
-            request.Method = Method.Post;
+            Task<RestResponse> t = null;
 
-            Task<RestResponse> t = ApiClientManager.ApiClient.ExecuteAsync(request);
-            t.Wait();
+            AllureLifecycle.Instance.WrapInStep(() => {
+                var request = new RestRequest($"/public/v1/users/{userId}/todos");
+                request.AddJsonBody(requestBody);
+                request.Method = Method.Post;
+
+                t = ApiClientManager.ApiClient.ExecuteAsync(request);
+                t.Wait();
+            }, "Posting to do for user id" + userId);
+
             return await t;
         }
     }

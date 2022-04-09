@@ -1,0 +1,10 @@
+{
+  "allure": {
+    "directory": "allure-results",
+    "links": [
+      "https://github.com/Saetabis1/TestingFrameworkTemplate/issues/{issue}",
+      "https://github.com/Saetabis1/TestingFrameworkTemplate/projects/1#card-{tms}",
+      "{link}"
+    ]
+  }
+}

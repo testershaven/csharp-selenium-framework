@@ -2,40 +2,33 @@
 using TestingFramework.ApiClient.Endpoints;
 using TestingFramework.ApiClient.Requests;
 using TestingFramework.ApiClient.Responses;
-using TestingFramework.Reporter;
 using NUnit.Framework;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
+using NUnit.Allure.Attributes;
+using NUnit.Allure.Core;
+using Allure.Commons;
 
 namespace TestingFramework
 {
     [Parallelizable(scope: ParallelScope.All)]
+    [AllureNUnit]
+    [AllureSuite("ToDo Tests")]
+    [AllureDisplayIgnored]
     public class ToDoTests
     {
         private static UserData toDoUser;
 
-        [OneTimeTearDown]
-        public void CloseAll()
-        {
-            ExtentManager.Reporter.Flush();
-        }
-
-        [TearDown]
-        public void AfterTest()
-        {
-            ReportManager.EndTest();
-        }
-
         [SetUp]
         public void Setup()
         {
-            ReportManager.CreateTest(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
             if (toDoUser == null) GetRandomUser();
         }
 
-
-        [Test]
+        [Test(Description = "Post a To do on user")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureOwner("Saetabis")]
         public void CreateToDoOnUser()
         {
             var request = new PostToDoRequest()
@@ -48,9 +41,6 @@ namespace TestingFramework
 
             var postResponse = ToDoEndpoint.PostToDo(request, toDoUser.id).Result;
 
-            ReportManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
-            ReportManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
-
             postResponse.StatusCode.Should().Be(HttpStatusCode.Created);
             postResponse.Content.Should().Contain(request.Title);
             postResponse.Content.Should().Contain(toDoUser.id.ToString());
@@ -58,7 +48,9 @@ namespace TestingFramework
             postResponse.Content.Should().Contain(request.due_on);
         }
 
-        [Test]
+        [Test(Description = "Post a To do without title")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureOwner("Saetabis")]
         public void PostToDoWithoudTitle()
         {
             var request = new PostToDoRequest()
@@ -71,14 +63,13 @@ namespace TestingFramework
 
             var postResponse = ToDoEndpoint.PostToDo(request, toDoUser.id).Result;
 
-            ReportManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
-            ReportManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
-
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"title\",\"message\":\"can't be blank\"}");
         }
-
-        [Test]
+   
+        [Test(Description = "Post a To do without status")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureOwner("Saetabis")]
         public void PostToDoWithoutStatus()
         {
             var request = new PostToDoRequest()
@@ -91,14 +82,13 @@ namespace TestingFramework
 
             var postResponse = ToDoEndpoint.PostToDo(request, toDoUser.id).Result;
 
-            ReportManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
-            ReportManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
-
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"status\",\"message\":\"can't be blank\"}");
         }
 
-        [Test]
+        [Test(Description = "Post a To do without User Id")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureOwner("Saetabis")]
         public void PostToDoWithoutUserId()
         {
             var request = new PostToDoRequest()
@@ -111,16 +101,12 @@ namespace TestingFramework
 
             var postResponse = ToDoEndpoint.PostToDo(request, -1).Result;
 
-            ReportManager.SetStepStatusPass("Response Code is: " + postResponse.StatusCode);
-            ReportManager.SetStepStatusPass("Response Content is: " + postResponse.Content);
-
             postResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             postResponse.Content.Should().Contain("{\"field\":\"user\",\"message\":\"must exist\"}");
         }
 
         private static void GetRandomUser()
         {
-            ReportManager.SetStepStatusPass("Picking a random User");
             var response = UserEndpoint.GetActiveUsers().Result;
             var users = JsonSerializer.Deserialize<GetUsersResponse>(response.Content);
             toDoUser = users.data.Take(1).First();

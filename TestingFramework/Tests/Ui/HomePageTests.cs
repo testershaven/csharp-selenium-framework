@@ -1,34 +1,22 @@
-﻿using TestingFramework.Reporter;
-using TestingFramework.UiClient;
+﻿using TestingFramework.UiClient;
 using TestingFramework.UiClient.Pages;
 using NUnit.Framework;
-using OpenQA.Selenium.Chrome;
+using NUnit.Allure.Attributes;
+using NUnit.Allure.Core;
+using Allure.Commons;
 
 namespace TestingFramework.Tests
 {
     [Parallelizable(scope: ParallelScope.All)]
+    [AllureNUnit]
+    [AllureSuite("Home Page Tests")]
+    [AllureDisplayIgnored]
     public class HomePageTests
     {
 
-        [SetUp]
-        public void Setup()
-        {
-            ReportManager.CreateTest(TestContext.CurrentContext.Test.ClassName, TestContext.CurrentContext.Test.Name);
-        }
-
-        [OneTimeTearDown]
-        public void CloseAll()
-        {
-            ExtentManager.Reporter.Flush();
-        }
-
-        [TearDown]
-        public void AfterTest()
-        {
-            ReportManager.EndTest();
-        }
-
-        [Test]
+        [Test(Description = "VerifyElementsInLandingPage")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureOwner("Saetabis")]
         public void VerifyElementsInLandingPage()
         {
             using (var driver = DriverManager.StartDriver())
@@ -37,10 +25,12 @@ namespace TestingFramework.Tests
                 homePage.Load();
 
                 Assert.True(homePage.IsLogoDisplayed());
-                ReportManager.SetStepStatusPass("Logo is correctly displayed");
             }
         }
-        [Test]
+
+        [Test(Description = "VerifyElementsInLandingPage2")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureOwner("Saetabis")]
         public void VerifyElementsInLandingPage2()
         {
             using (var driver = DriverManager.StartDriver())
@@ -49,11 +39,12 @@ namespace TestingFramework.Tests
                 homePage.Load();
 
                 Assert.True(homePage.IsLogoDisplayed());
-                ReportManager.SetStepStatusPass("Logo is correctly displayed");
             }
         }
 
-        [Test]
+        [Test(Description = "VerifyElementsInLandingPage3")]
+        [AllureSeverity(SeverityLevel.critical)]
+        [AllureOwner("Saetabis")]
         public void VerifyElementsInLandingPage3()
         {
             using (var driver = DriverManager.StartDriver())
@@ -62,7 +53,6 @@ namespace TestingFramework.Tests
                 homePage.Load();
 
                 Assert.True(homePage.IsLogoDisplayed());
-                ReportManager.SetStepStatusPass("Logo is correctly displayed");
             }
         }
     }

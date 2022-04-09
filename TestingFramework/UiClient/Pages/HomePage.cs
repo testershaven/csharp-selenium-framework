@@ -1,4 +1,5 @@
-﻿using TestingFramework.Reporter;
+﻿using Allure.Commons;
+using NUnit.Allure.Core;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
@@ -18,11 +19,15 @@ namespace TestingFramework.UiClient.Pages
 
         public void Load()
         {
-            Driver.Navigate().GoToUrl(ConfigManager.AppSettings["UiClient:Pages:HomePage"]);
-            WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
+            AllureLifecycle.Instance.WrapInStep(
+            () => {
 
-            wait.Until(condition => logo.Displayed);
-            ReportManager.SetStepStatusPass("Navigated to Yolo Group home page: https://yolo.group/");
+                Driver.Navigate().GoToUrl(ConfigManager.AppSettings["UiClient:Pages:HomePage"]);
+                WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(10));
+
+                wait.Until(condition => logo.Displayed);
+            },
+            "Navigating to the Home Page");
         }
 
         public bool IsLogoDisplayed() => logo.Displayed;
