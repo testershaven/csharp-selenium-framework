@@ -1,0 +1,27 @@
+version: 2.1
+
+orbs:
+  windows: circleci/windows@2.4.1
+
+jobs:
+ build:
+    executor:
+      name: windows/default 
+    steps:
+      - checkout
+      - run:
+          name: "Install chrome"
+          shell: powershell.exe
+          command: |
+            Install-PackageProvider -name chocolatey -Force
+            Set-PackageSource -Name chocolatey -Trusted
+            Get-PackageSource
+            choco install googlechrome
+      - run:
+          name: "Run Application Tests"
+          command: dotnet test
+
+workflows:
+  test:
+    jobs:
+      - build
