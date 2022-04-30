@@ -1,25 +1,27 @@
 version: 2.1
 
-orbs:
-  windows: circleci/windows@4.1.1
-
 jobs:
  build:
-    executor:
-      name: windows/default 
+    docker:
+      - image: cimg/base:2022.04
     steps:
       - checkout
       - run:
-          name: "Install chrome"
-          shell: powershell.exe
-          command: |
-            Install-PackageProvider -name chocolatey -Force
-            Set-PackageSource -Name chocolatey -Trusted
-            Get-PackageSource
-            choco install googlechrome
+        name: "Install net core"
+        command: |
+          sudo apt-get update
+          sudo apt-get install -y apt-transport-https
+          sudo apt-get update 
+          sudo apt-get install -y dotnet-sdk-6.0
+          sudo apt-get install -y aspnetcore-runtime-6.0
       - run:
-          name: "Run Application Tests"
-          command: dotnet test
+        name: "Install chrome"
+        command: |
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb
+      - run:
+        name: "Run Application Tests"
+        command: dotnet test
 
 workflows:
   test:
