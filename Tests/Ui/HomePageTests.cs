@@ -5,12 +5,13 @@ using NUnit.Allure.Attributes;
 using NUnit.Allure.Core;
 using Allure.Commons;
 
-namespace TestingFramework.Tests
+namespace TestingFramework.Tests.Ui
 {
     [Parallelizable(scope: ParallelScope.All)]
     [AllureNUnit]
     [AllureSuite("Home Page Tests")]
     [AllureDisplayIgnored]
+    [TestFixture]
     public class HomePageTests
     {
 

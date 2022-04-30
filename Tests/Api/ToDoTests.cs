@@ -9,13 +9,15 @@ using System.Text.Json;
 using NUnit.Allure.Attributes;
 using NUnit.Allure.Core;
 using Allure.Commons;
+using System;
 
-namespace TestingFramework
+namespace TestingFramework.Tests.Api
 {
     [Parallelizable(scope: ParallelScope.All)]
     [AllureNUnit]
     [AllureSuite("ToDo Tests")]
     [AllureDisplayIgnored]
+    [TestFixture]
     public class ToDoTests
     {
         private static UserData toDoUser;
@@ -23,6 +25,7 @@ namespace TestingFramework
         [SetUp]
         public void Setup()
         {
+            Console.WriteLine("SETUP IN CLASS");
             if (toDoUser == null) GetRandomUser();
         }
 
