@@ -7,22 +7,21 @@ jobs:
     steps:
       - checkout
       - run:
-        name: "Install net core"
-        command: |
-          sudo apt-get update
-          sudo apt-get install -y apt-transport-https
-          sudo apt-get update 
-          sudo apt-get install -y dotnet-sdk-6.0
-          sudo apt-get install -y aspnetcore-runtime-6.0
+          name: "Install net core"
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y apt-transport-https
+            sudo apt-get update 
+            sudo apt-get install -y dotnet-sdk-6.0
+            sudo apt-get install -y aspnetcore-runtime-6.0
       - run:
-        name: "Install chrome"
-        command: |
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo dpkg -i google-chrome-stable_current_amd64.deb
+          name: "Install chrome"
+          command: |
+            wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+            sudo dpkg -i google-chrome-stable_current_amd64.deb
       - run:
-        name: "Run Application Tests"
-        command: dotnet test
-
+          name: "Run Application Tests"
+          command: dotnet test
 workflows:
   test:
     jobs:
